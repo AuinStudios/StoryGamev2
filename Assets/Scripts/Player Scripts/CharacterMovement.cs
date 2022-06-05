@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class CharacterMovement : MonoBehaviour
 {
     //[Header("Gravity properties")]
@@ -104,7 +104,7 @@ public class CharacterMovement : MonoBehaviour
     private float walkSpeed = 5.0f;
     [SerializeField]
     private float runSpeedMultiplier = 2.0f;
-    private float currentRunSpeedMultiplier = 0.0f;
+    private float currentRunSpeedMultiplier = 1.0f;
     // private float MaxSpeed = 20;
     
     //private Vector2 mouseXZ = Vector2.zero;
@@ -122,23 +122,57 @@ public class CharacterMovement : MonoBehaviour
     private float groundCheckRadius = 0.3f;
     private bool isGrounded = false;
     private Vector3 velocity = Vector3.zero; // will affect X and Z
+    [Header("Camera References")]
+    [SerializeField]
+    private  Transform mainCam = null;
+    [SerializeField]
+    private Transform cameraTarget = null;
+    [SerializeField]
+    private Transform ori;
+    [Header("Stamina Ui")]
+    [SerializeField]
+    private Image SliderImage;
 
+    private bool cansprint = true;
+
+    private Quaternion OriQuaternion;
     // Update is called once per frame
     void Update()
     {
         //Inputs --------------------------------------------------------------------------------------------
-        direction = new(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        currentRunSpeedMultiplier = Input.GetButton("Run") ? runSpeedMultiplier : 1.0f;
+        direction = new(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        //currentRunSpeedMultiplier = Input.GetButton("Run") ? runSpeedMultiplier : 1.0f;
+        //SliderImage.fillAmount = Input.GetButton("Run") ? SliderImage.fillAmount -= 1 : SliderImage.fillAmount += 0.5f;
+        if (Input.GetButton("Run") && cansprint == true  )
+        {
+            currentRunSpeedMultiplier = runSpeedMultiplier;
 
+            SliderImage.fillAmount = direction.x != 0 || direction.y != 0 ? SliderImage.fillAmount -= 0.1f * Time.deltaTime : SliderImage.fillAmount += 0.02f * Time.deltaTime;
+            cansprint = SliderImage.fillAmount < 0.05f ? cansprint = false :cansprint = true;
+        }
+        else if(SliderImage.fillAmount < 1)
+        {
+            currentRunSpeedMultiplier = 1.0f;
+            SliderImage.fillAmount += 0.02f * Time.deltaTime;
+        
+            cansprint = SliderImage.fillAmount > 0.15f ? cansprint = true : cansprint = false;    
+        }
         // Movement -------------------------------------------------------------------------------------------
-        move = currentRunSpeedMultiplier * walkSpeed * (Vector3.Normalize(transform.right * direction.x + transform.forward * direction.y));
+        move = currentRunSpeedMultiplier * walkSpeed * (Vector3.Normalize(mainCam.right * direction.x + ori.forward * direction.y));
         player.Move(move * Time.deltaTime);
-
+        // CamDir----------------------------------------------------------------------------------------------
+        OriQuaternion = new Quaternion(0, mainCam.rotation.y , 0 , mainCam.rotation.w);
+        ori.rotation = OriQuaternion;
         // Gravity -------------------------------------------------------------------------------------------
         velocity.y = GetGravityForce();
         player.Move(velocity * Time.deltaTime);
+        // Camera Target ---------------------------
+        mainCam.position = cameraTarget.position;
     }
-
+   // public void Stamina()
+   // {
+   //     SliderImage.color = Color.Lerp(Color.white, Color.black, SliderImage.fillAmount / 100);
+   // }
     private float GetGravityForce()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);

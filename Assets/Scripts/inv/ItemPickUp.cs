@@ -33,8 +33,8 @@ public sealed class ItemPickUp : MonoBehaviour
     //[SerializeField]
     // private Sway SwayActive;
     private float LerpTime = 0;
-
-    private bool IsDisableOrNot;
+    [HideInInspector]
+    public bool IsDisableOrNot;
 
     private Vector3 UiPickUpNormalSize = new Vector3(1, 1, 1);
     private Vector3 UiPickUpHideSize = new Vector3(0, 0, 0);
@@ -50,15 +50,14 @@ public sealed class ItemPickUp : MonoBehaviour
     //
     //}
     #endregion
-    private void OnMouseOver()
+    public void MOUSEHover()
     {
         if (Vector3.Distance(transform.position, Player.position) >= 5 && IsDisableOrNot == true)
         {
-
             IsDisableOrNot = false;
             StartCoroutine(OffHover());
         }
-        if (Vector3.Distance(transform.position, Player.position) <= 5 && IsDisableOrNot == false)
+        else if (Vector3.Distance(transform.position, Player.position) <= 5 && IsDisableOrNot == false)
         {
             UiText.text = Item.ItemName;
             IsDisableOrNot = true;
@@ -66,7 +65,10 @@ public sealed class ItemPickUp : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.E) && Vector3.Distance(transform.position, Player.position) <= 5)
         {
-            inv.items.Add(Item.IsActive);
+            // inv.items.Add(Item.IsActive);
+            inv.getpickupscriptonce = true;
+            inv.pickup = null;
+
             for (int i = 0; i < WeaponHolder.childCount; i++)
             {
                 if (WeaponHolder.GetChild(i).childCount > 0)
@@ -96,24 +98,24 @@ public sealed class ItemPickUp : MonoBehaviour
             //SwayActive.enabled = true;
 
             UiPopUpHover.localScale = UiPickUpHideSize;
-            for (int i = 0; i < inv.slots.Count; i++)
+            for (int i = 0; i < inv.slots.Length; i++)
             {
-                if (inv.slots.ToArray()[i].enabled == false)
+                if (inv.slots[i].enabled == false)
                 {
 
-                    inv.slots.ToArray()[i].enabled = true;
-                    inv.slots.ToArray()[i].sprite = Item.ItemIcon;
+                    inv.slots[i].enabled = true;
+                    inv.slots[i].sprite = Item.ItemIcon;
                     break;
                 }
 
             }
         }
     }
-    private void OnMouseExit()
-    {
-        IsDisableOrNot = false;
-        StartCoroutine(OffHover());
-    }
+     public void mousexit()
+     {
+         IsDisableOrNot = false;
+         StartCoroutine(OffHover());
+     }
 
     private IEnumerator OffHover()
     {

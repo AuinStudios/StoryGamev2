@@ -50,5 +50,14 @@ MonoBehaviour:
   OpenAndCloseInvUi: {fileID: 0}
   WeaponHolder: {fileID: 0}
   Player: {fileID: 0}
-  slots: []
-  items: 
+  MainCam: {fileID: 0}
+  slots:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  getpickupscriptonce: 1
+  pickup: {fileID: 0}
+  mask:
+    serializedVersion: 2
+    m_Bits: 64

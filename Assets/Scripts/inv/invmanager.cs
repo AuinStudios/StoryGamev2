@@ -19,23 +19,34 @@ public sealed class invmanager : MonoBehaviour
     private Transform OpenAndCloseInvUi;
     [SerializeField]
     private Transform WeaponHolder;
+    [Header("Player Stop Cam And Movement")]
     [SerializeField]
     private CharacterMovement Player;
-
+    [SerializeField]
+    private CameraController MainCam;
     private GameObject HoldTempSlot = null;
     private bool GetTempSlotOnce = false;
 
-    [Header("Lists")]
-    public List<Image> slots;
-    public List<bool> items;
+    [Header("GetTheSlotsOfItems")]
+    public Image[] slots;
+
+    [HideInInspector]
+    public bool getpickupscriptonce = true;
+    [HideInInspector]
+    public ItemPickUp pickup;
+    
+    [Header("RaycastToPickUpObject")]
+    [SerializeField]
+    private LayerMask mask;
+   // public List<bool> items;
     public void Start()
     {
-        for (int i = 0; i < invui.GetChild(1).childCount; i++)
-        {
-            slots.Add(invui.GetChild(1).GetChild(i).GetChild(0).GetComponent<Image>());
-        }
+       // for (int i = 0; i < invui.GetChild(1).childCount; i++)
+       // {
+       //     slots[i](invui.GetChild(1).GetChild(i).GetChild(0).GetComponent<Image>());
+       // }
         invui.gameObject.SetActive(false);
-
+       // WeaponHolder.GetComponentInChildren<Sway>().enabled = false;
         // array[i++] = value;
         // for(int i = 0; i < WeaponHolder.childCount; i++)
         // {
@@ -46,9 +57,29 @@ public sealed class invmanager : MonoBehaviour
 
     private void Update()
     {
+        // Raycast -------------------------------------------------------
+        if(Physics.Raycast(MainCam.transform.position , MainCam.transform.forward, out  RaycastHit hit, 5 , mask ) && invui.gameObject.activeSelf == false)
+        {
+     
+            if( getpickupscriptonce == true && pickup != hit.transform.GetComponent<ItemPickUp>())
+            {
+             pickup =  hit.transform.GetComponent<ItemPickUp>();
+                getpickupscriptonce = false;
+            }
+            if(pickup != null)
+            {
+              pickup.MOUSEHover();
+            }
+          
+        }
+        else if(pickup != null && pickup.IsDisableOrNot == true)
+        {
+            getpickupscriptonce = true;
+          pickup.mousexit();
+        }
         // Weapon Swap ------------------------------------------------------
         #region uglycode
-        if (Input.GetKeyDown(KeyCode.Alpha1) && invui.gameObject.activeSelf == false && items.Count >= 1)
+        if (Input.GetKeyDown(KeyCode.Alpha1) && invui.gameObject.activeSelf == false )
         {
             for (int i = 0; i < WeaponHolder.childCount; i++)
             {
@@ -58,7 +89,7 @@ public sealed class invmanager : MonoBehaviour
             WeaponHolder.GetChild(0).gameObject.SetActive(true);
             WeaponHolder.GetComponentInChildren<Sway>().enabled = true;
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2) && invui.gameObject.activeSelf == false && items.Count >= 2)
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && invui.gameObject.activeSelf == false )
         {
             for (int i = 0; i < WeaponHolder.childCount; i++)
             {
@@ -67,7 +98,7 @@ public sealed class invmanager : MonoBehaviour
             WeaponHolder.GetChild(1).gameObject.SetActive(true);
             WeaponHolder.GetComponentInChildren<Sway>().enabled = true;
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3) && invui.gameObject.activeSelf == false && items.Count >= 3)
+        else if (Input.GetKeyDown(KeyCode.Alpha3) && invui.gameObject.activeSelf == false )
         {
             for (int i = 0; i < WeaponHolder.childCount; i++)
             {
@@ -76,7 +107,7 @@ public sealed class invmanager : MonoBehaviour
             WeaponHolder.GetChild(2).gameObject.SetActive(true);
             WeaponHolder.GetComponentInChildren<Sway>().enabled = true;
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4) && invui.gameObject.activeSelf == false && items.Count >= 4)
+        else if (Input.GetKeyDown(KeyCode.Alpha4) && invui.gameObject.activeSelf == false )
         {
             for (int i = 0; i < WeaponHolder.childCount; i++)
             {
@@ -93,25 +124,25 @@ public sealed class invmanager : MonoBehaviour
 
             if (invui.gameObject.activeSelf == true)
             {
+                
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 Player.enabled = true;
+                MainCam.enabled = true;
                 StartCoroutine(OpeninvOrClose());
-
-
                 WeaponHolder.GetComponentInChildren<Sway>().enabled = true;
-
+                
+               
             }
             else
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 Player.enabled = false;
-
+                MainCam.enabled = false;
+               
                 WeaponHolder.GetComponentInChildren<Sway>().enabled = false;
-
                 StartCoroutine(OpeninvOrClose());
-
             }
 
         }
@@ -127,7 +158,7 @@ public sealed class invmanager : MonoBehaviour
                 invui.position = Vector3.Lerp(invui.position, OpenAndCloseInvUi.GetChild(0).position, timelerp / 1);
                 yield return new WaitForFixedUpdate();
             }
-
+            
             invui.gameObject.SetActive(false);
         }
         else
@@ -171,13 +202,13 @@ public sealed class invmanager : MonoBehaviour
                 {
                     if (GetTempSlotOnce == false)
                     {
-                        for (int i = 0; i < slots.Count; i++)
-                        {
-                            slots.ToArray()[i].tag = "Untagged";
-                        }
+                       // for (int i = 0; i < slots.Length; i++)
+                       // {
+                       //     slots[i].tag = "Untagged";
+                       // }
                         HoldTempSlot = result.gameObject;
                         //HoldTempWeapon = HoldTempSlot.transform.parent
-                        result.gameObject.tag = "itemSlot";
+                      //  result.gameObject.tag = "itemSlot";
                         HoldTempSlot.transform.position = result.gameObject.transform.position;
                     }
                     GetTempSlotOnce = true;
@@ -214,10 +245,18 @@ public sealed class invmanager : MonoBehaviour
         {
             if (result.gameObject.CompareTag("ItemSlotHolder") && WeaponHolder.childCount > 1 && result.gameObject.transform.GetSiblingIndex() <= WeaponHolder.childCount)
             {
+                if(WeaponHolder.GetChild(result.gameObject.transform.GetSiblingIndex()).childCount < 1)
+                {
+                    WeaponHolder.GetChild(HoldTempSlot.transform.parent.GetSiblingIndex()).GetChild(0).SetParent(WeaponHolder.GetChild(result.gameObject.transform.GetSiblingIndex()));
+                }
+                else
+                {
+                    WeaponHolder.GetChild(result.gameObject.transform.GetSiblingIndex()).GetChild(0).SetParent(WeaponHolder.GetChild(HoldTempSlot.transform.parent.GetSiblingIndex()));
 
-                WeaponHolder.GetChild(result.gameObject.transform.GetSiblingIndex()).GetChild(0).SetParent(WeaponHolder.GetChild(HoldTempSlot.transform.parent.GetSiblingIndex()));
+                    WeaponHolder.GetChild(HoldTempSlot.transform.parent.GetSiblingIndex()).GetChild(0).SetParent(WeaponHolder.GetChild(result.gameObject.transform.GetSiblingIndex()));
+                }
                 HoldTempSlot.transform.position = result.gameObject.transform.position;
-                WeaponHolder.GetChild(HoldTempSlot.transform.parent.GetSiblingIndex()).GetChild(0).SetParent(WeaponHolder.GetChild(result.gameObject.transform.GetSiblingIndex()));
+                
 
                 //WeaponHolder.GetChild(result.gameObject.transform.GetSiblingIndex()).SetSiblingIndex(HoldTempSlot.transform.parent.GetSiblingIndex());
 
@@ -232,9 +271,9 @@ public sealed class invmanager : MonoBehaviour
                 HoldTempSlot.transform.position = HoldTempSlot.transform.parent.position;
             }
         }
-        for (int i = 0; i < slots.Count; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
-            slots.ToArray()[i].tag = "itemSlot";
+            slots[i].tag = "itemSlot";
         }
         GetTempSlotOnce = false;
         // HoldTempSlot.GetComponent<Image>().raycastTarget = true;
