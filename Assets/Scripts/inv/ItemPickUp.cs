@@ -21,7 +21,7 @@ public sealed class ItemPickUp : MonoBehaviour
     // [SerializeField]
     // private Transform ItemPrefab;
     [SerializeField]
-    private Transform WeaponHolder;
+    private WeaponSystem WeaponHolder;
     [Header("UiTexts")]
     [SerializeField]
     private TextMeshProUGUI UiText;
@@ -65,29 +65,31 @@ public sealed class ItemPickUp : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.E) && Vector3.Distance(transform.position, Player.position) <= 5)
         {
-            // inv.items.Add(Item.IsActive);
+            // inv.items.Add(Item.IsActive);\
+            
             inv.getpickupscriptonce = true;
             inv.pickup = null;
 
-            for (int i = 0; i < WeaponHolder.childCount; i++)
+            for (int i = 0; i < WeaponHolder.transform.childCount; i++)
             {
-                if (WeaponHolder.GetChild(i).childCount > 0)
+                if (WeaponHolder.transform.GetChild(i).childCount > 0)
                 {
-                    WeaponHolder.GetChild(i).GetComponentInChildren<Sway>().enabled = false;
+                    WeaponHolder.transform.GetChild(i).GetComponentInChildren<Sway>().enabled = false;
                 }
 
-                WeaponHolder.GetChild(i).gameObject.SetActive(false);
+                WeaponHolder.transform.GetChild(i).gameObject.SetActive(false);
 
             }
 
-            for (int i = 0; i < WeaponHolder.childCount; i++)
+            for (int i = 0; i < WeaponHolder.transform.childCount; i++)
             {
-                if (WeaponHolder.GetChild(i).childCount == 0)
+                if (WeaponHolder.transform.GetChild(i).childCount == 0)
                 {
-                    WeaponHolder.GetChild(i).gameObject.SetActive(true);
-                    transform.position = WeaponHolder.position;
-                    transform.rotation = WeaponHolder.rotation;
-                    transform.parent = WeaponHolder.GetChild(i);
+                    WeaponHolder.transform.GetChild(i).gameObject.SetActive(true);
+                    transform.position = WeaponHolder.transform.position;
+                    transform.rotation = WeaponHolder.transform.rotation;
+                    transform.parent = WeaponHolder.transform.GetChild(i);
+                    WeaponHolder.Items[i] = Item;
                     break;
                 }
 

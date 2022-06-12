@@ -18,7 +18,9 @@ public sealed class invmanager : MonoBehaviour
     [SerializeField]
     private Transform OpenAndCloseInvUi;
     [SerializeField]
-    private Transform WeaponHolder;
+    [Header("WeaponSystem")]
+    private WeaponSystem WeaponHolder;
+    private ItemsScriptableobject tempobj;
     [Header("Player Stop Cam And Movement")]
     [SerializeField]
     private CharacterMovement Player;
@@ -27,9 +29,10 @@ public sealed class invmanager : MonoBehaviour
     private GameObject HoldTempSlot = null;
     private bool GetTempSlotOnce = false;
 
-    [Header("GetTheSlotsOfItems")]
+    [Header("GetTheSlotsOfItems and getsway")]
     public Image[] slots;
-
+    [SerializeField]
+    private Sway[] ItemHolderSway;
     [HideInInspector]
     public bool getpickupscriptonce = true;
     [HideInInspector]
@@ -70,7 +73,6 @@ public sealed class invmanager : MonoBehaviour
             {
               pickup.MOUSEHover();
             }
-          
         }
         else if(pickup != null && pickup.IsDisableOrNot == true)
         {
@@ -81,40 +83,51 @@ public sealed class invmanager : MonoBehaviour
         #region uglycode
         if (Input.GetKeyDown(KeyCode.Alpha1) && invui.gameObject.activeSelf == false )
         {
-            for (int i = 0; i < WeaponHolder.childCount; i++)
+            for (int i = 0; i < WeaponHolder.transform.childCount; i++)
             {
-                WeaponHolder.GetChild(i).gameObject.SetActive(false);
-
+                //WeaponHolder.GetChild(i).gameObject.SetActive(false);
+                ItemHolderSway[i].gameObject.SetActive(false);
+                ItemHolderSway[i].enabled = true;
             }
-            WeaponHolder.GetChild(0).gameObject.SetActive(true);
-            WeaponHolder.GetComponentInChildren<Sway>().enabled = true;
+            ItemHolderSway[0].gameObject.SetActive(true);
+           // WeaponHolder.GetChild(0).gameObject.SetActive(true);
+            
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2) && invui.gameObject.activeSelf == false )
         {
-            for (int i = 0; i < WeaponHolder.childCount; i++)
+            for (int i = 0; i < WeaponHolder.transform.childCount; i++)
             {
-                WeaponHolder.GetChild(i).gameObject.SetActive(false);
+                //WeaponHolder.GetChild(i).gameObject.SetActive(false);
+                ItemHolderSway[i].gameObject.SetActive(false);
+                ItemHolderSway[i].enabled = true;
             }
-            WeaponHolder.GetChild(1).gameObject.SetActive(true);
-            WeaponHolder.GetComponentInChildren<Sway>().enabled = true;
+            ItemHolderSway[1].gameObject.SetActive(true);
+            //  WeaponHolder.GetChild(1).gameObject.SetActive(true);
+            // WeaponHolder.GetComponentInChildren<Sway>().enabled = true;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3) && invui.gameObject.activeSelf == false )
         {
-            for (int i = 0; i < WeaponHolder.childCount; i++)
+            for (int i = 0; i < WeaponHolder.transform.childCount; i++)
             {
-                WeaponHolder.GetChild(i).gameObject.SetActive(false);
+                //WeaponHolder.GetChild(i).gameObject.SetActive(false);
+                ItemHolderSway[i].gameObject.SetActive(false);
+                ItemHolderSway[i].enabled = true;
             }
-            WeaponHolder.GetChild(2).gameObject.SetActive(true);
-            WeaponHolder.GetComponentInChildren<Sway>().enabled = true;
+            ItemHolderSway[2].gameObject.SetActive(true);
+            //WeaponHolder.GetChild(2).gameObject.SetActive(true);
+           // WeaponHolder.GetComponentInChildren<Sway>().enabled = true;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4) && invui.gameObject.activeSelf == false )
         {
-            for (int i = 0; i < WeaponHolder.childCount; i++)
+            for (int i = 0; i < WeaponHolder.transform.childCount; i++)
             {
-                WeaponHolder.GetChild(i).gameObject.SetActive(false);
+                // WeaponHolder.GetChild(i).gameObject.SetActive(false);
+                ItemHolderSway[i].gameObject.SetActive(false);
+                ItemHolderSway[i].enabled = true;
             }
-            WeaponHolder.GetChild(3).gameObject.SetActive(true);
-            WeaponHolder.GetComponentInChildren<Sway>().enabled = true;
+            ItemHolderSway[3].gameObject.SetActive(true);
+            // WeaponHolder.GetChild(3).gameObject.SetActive(true);
+            // WeaponHolder.GetComponentInChildren<Sway>().enabled = true;
         }
         #endregion
         // Open Inv --------------------------------------------------------
@@ -130,7 +143,10 @@ public sealed class invmanager : MonoBehaviour
                 Player.enabled = true;
                 MainCam.enabled = true;
                 StartCoroutine(OpeninvOrClose());
-                WeaponHolder.GetComponentInChildren<Sway>().enabled = true;
+                for(int i = 0; i < WeaponHolder.transform.childCount; i++)
+                {
+                    ItemHolderSway[i].enabled = true;
+                }
                 
                
             }
@@ -140,8 +156,11 @@ public sealed class invmanager : MonoBehaviour
                 Cursor.visible = true;
                 Player.enabled = false;
                 MainCam.enabled = false;
-               
-                WeaponHolder.GetComponentInChildren<Sway>().enabled = false;
+
+                for (int i = 0; i < WeaponHolder.transform.childCount; i++)
+                {
+                    ItemHolderSway[i].enabled = false;
+                }
                 StartCoroutine(OpeninvOrClose());
             }
 
@@ -243,17 +262,27 @@ public sealed class invmanager : MonoBehaviour
         //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
         foreach (RaycastResult result in results)
         {
-            if (result.gameObject.CompareTag("ItemSlotHolder") && WeaponHolder.childCount > 1 && result.gameObject.transform.GetSiblingIndex() <= WeaponHolder.childCount)
+            if (result.gameObject.CompareTag("ItemSlotHolder") && WeaponHolder.transform.childCount > 1 && result.gameObject.transform.GetSiblingIndex() <= WeaponHolder.transform.childCount)
             {
-                if(WeaponHolder.GetChild(result.gameObject.transform.GetSiblingIndex()).childCount < 1)
+                if(WeaponHolder.transform.GetChild(result.gameObject.transform.GetSiblingIndex()).childCount < 1)
                 {
-                    WeaponHolder.GetChild(HoldTempSlot.transform.parent.GetSiblingIndex()).GetChild(0).SetParent(WeaponHolder.GetChild(result.gameObject.transform.GetSiblingIndex()));
+                    // change item in weaponholder slot
+                    WeaponHolder.transform.GetChild(HoldTempSlot.transform.parent.GetSiblingIndex()).GetChild(0).SetParent(WeaponHolder.transform.GetChild(result.gameObject.transform.GetSiblingIndex()));
+                    // Change arrayslots
+                    tempobj =  WeaponHolder.Items[HoldTempSlot.transform.parent.GetSiblingIndex()];
+                    WeaponHolder.Items[HoldTempSlot.transform.parent.GetSiblingIndex()] = WeaponHolder.Items[result.gameObject.transform.GetSiblingIndex()];
+                    WeaponHolder.Items[result.gameObject.transform.GetSiblingIndex()] = tempobj;
                 }
                 else
                 {
-                    WeaponHolder.GetChild(result.gameObject.transform.GetSiblingIndex()).GetChild(0).SetParent(WeaponHolder.GetChild(HoldTempSlot.transform.parent.GetSiblingIndex()));
+                    // change item in weaponholder slot
+                    WeaponHolder.transform.GetChild(result.gameObject.transform.GetSiblingIndex()).GetChild(0).SetParent(WeaponHolder.transform.GetChild(HoldTempSlot.transform.parent.GetSiblingIndex()));
 
-                    WeaponHolder.GetChild(HoldTempSlot.transform.parent.GetSiblingIndex()).GetChild(0).SetParent(WeaponHolder.GetChild(result.gameObject.transform.GetSiblingIndex()));
+                    WeaponHolder.transform.GetChild(HoldTempSlot.transform.parent.GetSiblingIndex()).GetChild(0).SetParent(WeaponHolder.transform.GetChild(result.gameObject.transform.GetSiblingIndex()));
+                    // Change arrayslots
+                    tempobj = WeaponHolder.Items[HoldTempSlot.transform.parent.GetSiblingIndex()];
+                    WeaponHolder.Items[HoldTempSlot.transform.parent.GetSiblingIndex()] = WeaponHolder.Items[result.gameObject.transform.GetSiblingIndex()];
+                    WeaponHolder.Items[result.gameObject.transform.GetSiblingIndex()] = tempobj;
                 }
                 HoldTempSlot.transform.position = result.gameObject.transform.position;
                 

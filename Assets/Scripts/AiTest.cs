@@ -36,7 +36,12 @@ public sealed class AiTest : MonoBehaviour
     private float agentVisibility = 5.0f;
     [SerializeField, Range(0.1f, 2.0f)]
     private float distanceThreashold = 1.0f;
-   
+     [SerializeField]
+	private Transform player;
+	[SerializeField]
+	private NavMeshAgent agent;
+    [SerializeField]
+    private AgentStates agentState = AgentStates.wander;
    // [SerializeField, Range(1.0f, 5.0f)]
    // private float speed = 3.0f;
 
@@ -46,13 +51,8 @@ public sealed class AiTest : MonoBehaviour
     [SerializeField, Range(6.0f, 10.0f)]
     private float maxDelay = 8.0f;
     private float currentDelay;
-
-    [SerializeField]
-	private Transform player;
-	[SerializeField]
-	private NavMeshAgent agent;
-    [SerializeField]
-    private AgentStates agentState = AgentStates.wander;
+    
+  
     // Start is called before the first frame update
     private void Start()
 	{

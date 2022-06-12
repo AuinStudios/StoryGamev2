@@ -165,6 +165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 279889127}
+  - component: {fileID: 279889128}
   m_Layer: 0
   m_Name: WeaponHolder
   m_TagString: Untagged
@@ -191,6 +192,23 @@ Transform:
   m_Father: {fileID: 1687258585}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &279889128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 279889126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bc5a7045c9df3b47b31d38b98ca5206, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Items:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1001 &333918134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -265,11 +283,15 @@ PrefabInstance:
     - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
       propertyPath: WeaponHolder
       value: 
-      objectReference: {fileID: 279889127}
+      objectReference: {fileID: 279889128}
     - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
       propertyPath: m_EventSystem
       value: 
       objectReference: {fileID: 1909386196}
+    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
+      propertyPath: sways.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
       propertyPath: OpenAndCloseInvUi
       value: 
@@ -290,6 +312,42 @@ PrefabInstance:
       propertyPath: slots.Array.data[3]
       value: 
       objectReference: {fileID: 4669982563038627320}
+    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
+      propertyPath: sways.Array.data[0]
+      value: 
+      objectReference: {fileID: 548627209}
+    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
+      propertyPath: sways.Array.data[1]
+      value: 
+      objectReference: {fileID: 1982366093}
+    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
+      propertyPath: sways.Array.data[2]
+      value: 
+      objectReference: {fileID: 1340460174}
+    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
+      propertyPath: sways.Array.data[3]
+      value: 
+      objectReference: {fileID: 1109280379}
+    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
+      propertyPath: ItemHolderSway.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
+      propertyPath: ItemHolderSway.Array.data[0]
+      value: 
+      objectReference: {fileID: 548627209}
+    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
+      propertyPath: ItemHolderSway.Array.data[1]
+      value: 
+      objectReference: {fileID: 1982366093}
+    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
+      propertyPath: ItemHolderSway.Array.data[2]
+      value: 
+      objectReference: {fileID: 1340460174}
+    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
+      propertyPath: ItemHolderSway.Array.data[3]
+      value: 
+      objectReference: {fileID: 1109280379}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
 --- !u!1 &356357215
@@ -525,15 +583,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0fea748b8e9814419abd5a8c51f09d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isWaitingForAttack: 0
   stats: {fileID: 11400000, guid: 08836e27ac5d8824fa7e6715742111e4, type: 2}
   agentVisibility: 15
   distanceThreashold: 1
-  minDelay: 2.5
-  maxDelay: 8
   player: {fileID: 1412614343}
   agent: {fileID: 976217130}
   agentState: 0
+  minDelay: 2.5
+  maxDelay: 8
 --- !u!65 &976217126
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1976,7 +2033,7 @@ PrefabInstance:
     - target: {fileID: 6589589561889172725, guid: 3d5412c95f81b4846b210f7ce5f437fb, type: 3}
       propertyPath: WeaponHolder
       value: 
-      objectReference: {fileID: 279889127}
+      objectReference: {fileID: 279889128}
     - target: {fileID: 6589589561889172731, guid: 3d5412c95f81b4846b210f7ce5f437fb, type: 3}
       propertyPath: m_Name
       value: flashlighttemp
@@ -2102,7 +2159,7 @@ PrefabInstance:
     - target: {fileID: 3229827569515404504, guid: c057203f2f1779c4d940fb6ae54b12c5, type: 3}
       propertyPath: WeaponHolder
       value: 
-      objectReference: {fileID: 279889127}
+      objectReference: {fileID: 279889128}
     - target: {fileID: 3229827569515404504, guid: c057203f2f1779c4d940fb6ae54b12c5, type: 3}
       propertyPath: DisableScript
       value: 
