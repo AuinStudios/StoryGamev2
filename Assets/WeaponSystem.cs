@@ -11,7 +11,7 @@ public sealed class WeaponSystem : MonoBehaviour
 {
 	
 	public ItemsScriptableobject[] Items;
-	
+	public int Index = 0;
     // Start is called before the first frame update
     private void Start()
 	{

@@ -63,61 +63,78 @@ public sealed class ItemPickUp : MonoBehaviour
             IsDisableOrNot = true;
             StartCoroutine(OnHover());
         }
-        if (Input.GetKeyDown(KeyCode.E) && Vector3.Distance(transform.position, Player.position) <= 5)
+        else if (Input.GetKeyDown(KeyCode.E) && Vector3.Distance(transform.position, Player.position) <= 5)
         {
-            // inv.items.Add(Item.IsActive);\
-            
-            inv.getpickupscriptonce = true;
-            inv.pickup = null;
-
-            for (int i = 0; i < WeaponHolder.transform.childCount; i++)
-            {
-                if (WeaponHolder.transform.GetChild(i).childCount > 0)
-                {
-                    WeaponHolder.transform.GetChild(i).GetComponentInChildren<Sway>().enabled = false;
-                }
-
-                WeaponHolder.transform.GetChild(i).gameObject.SetActive(false);
-
-            }
-
-            for (int i = 0; i < WeaponHolder.transform.childCount; i++)
-            {
-                if (WeaponHolder.transform.GetChild(i).childCount == 0)
-                {
-                    WeaponHolder.transform.GetChild(i).gameObject.SetActive(true);
-                    transform.position = WeaponHolder.transform.position;
-                    transform.rotation = WeaponHolder.transform.rotation;
-                    transform.parent = WeaponHolder.transform.GetChild(i);
-                    WeaponHolder.Items[i] = Item;
-                    break;
-                }
-
-            }
-
-            boxcollider.isTrigger = true;
-            Destroy(DisableScript);
-            //SwayActive.enabled = true;
-
-            UiPopUpHover.localScale = UiPickUpHideSize;
-            for (int i = 0; i < inv.slots.Length; i++)
-            {
-                if (inv.slots[i].enabled == false)
-                {
-
-                    inv.slots[i].enabled = true;
-                    inv.slots[i].sprite = Item.ItemIcon;
-                    break;
-                }
-
-            }
+            ItemGet();
         }
     }
-     public void mousexit()
-     {
-         IsDisableOrNot = false;
-         StartCoroutine(OffHover());
-     }
+
+
+    private void ItemGet()
+    {
+        // inv.items.Add(Item.IsActive);\
+
+        inv.getpickupscriptonce = true;
+        inv.pickup = null;
+
+        for (int i = 0; i < WeaponHolder.transform.childCount; i++)
+        {
+            if (WeaponHolder.transform.GetChild(i).childCount > 0)
+            {
+                inv.ItemHolderSway[i].enabled = false;
+               // WeaponHolder.transform.GetChild(i).GetComponentInChildren<Sway>().enabled = false;
+            }
+            inv.ItemHolderSway[i].gameObject.SetActive(false);
+          //  WeaponHolder.transform.GetChild(i).gameObject.SetActive(false);
+
+        }
+
+        for (int i = 0; i < WeaponHolder.transform.childCount; i++)
+        {
+            if (WeaponHolder.transform.GetChild(i).childCount == 0)
+            {
+                // WeaponHolder.transform.GetChild(i).gameObject.SetActive(true);
+                inv.ItemHolderSway[i].gameObject.SetActive(true);
+                transform.position = WeaponHolder.transform.position;
+                transform.rotation = WeaponHolder.transform.rotation;
+                transform.parent = WeaponHolder.transform.GetChild(i);
+                WeaponHolder.Items[i] = Item;
+                break;
+            }
+
+        }
+
+        boxcollider.isTrigger = true;
+       // for(int i = 0; i < WeaponHolder.Items.Length; i++)
+       // {
+       //     if(WeaponHolder.Items[i] == null)
+       //     {
+       //         WeaponHolder.Items[i] = Item;
+       //     }
+       // }
+        Destroy(DisableScript);
+        //SwayActive.enabled = true;
+
+        UiPopUpHover.localScale = UiPickUpHideSize;
+        for (int i = 0; i < inv.slots.Length; i++)
+        {
+            if (inv.slots[i].enabled == false)
+            {
+
+                inv.slots[i].enabled = true;
+                inv.slots[i].sprite = Item.ItemIcon;
+                break;
+            }
+
+        }
+    }
+
+
+    public void mousexit()
+    {
+        IsDisableOrNot = false;
+        StartCoroutine(OffHover());
+    }
 
     private IEnumerator OffHover()
     {

@@ -11,7 +11,9 @@ public class ItemsScriptableobject : ScriptableObject
 
     public Sprite ItemIcon;
 
-    public int damage = 5;
+    public int MaxDamage = 30;
+
+    public int NormalDamage = 10;
 
     public bool CanAttack = true;
 }

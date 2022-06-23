@@ -24,7 +24,8 @@ public class ItemEditor : Editor
         if (itemsScriptableobject.CanAttack)
         {
             GUILayout.ExpandWidth(false);
-            itemsScriptableobject.damage = EditorGUILayout.IntSlider("Damage", itemsScriptableobject.damage, 0, 10);
+            itemsScriptableobject.MaxDamage = EditorGUILayout.IntSlider("MaxDamage", itemsScriptableobject.MaxDamage, 0, 30);
+            itemsScriptableobject.NormalDamage = EditorGUILayout.IntSlider("Damage", itemsScriptableobject.NormalDamage, 0, itemsScriptableobject.MaxDamage);
         }
 
         serializedObject.ApplyModifiedProperties();

@@ -31,8 +31,9 @@ public sealed class invmanager : MonoBehaviour
 
     [Header("GetTheSlotsOfItems and getsway")]
     public Image[] slots;
-    [SerializeField]
-    private Sway[] ItemHolderSway;
+
+    public Sway[] ItemHolderSway;
+
     [HideInInspector]
     public bool getpickupscriptonce = true;
     [HideInInspector]
@@ -63,16 +64,15 @@ public sealed class invmanager : MonoBehaviour
         // Raycast -------------------------------------------------------
         if(Physics.Raycast(MainCam.transform.position , MainCam.transform.forward, out  RaycastHit hit, 5 , mask ) && invui.gameObject.activeSelf == false)
         {
-     
-            if( getpickupscriptonce == true && pickup != hit.transform.GetComponent<ItemPickUp>())
-            {
-             pickup =  hit.transform.GetComponent<ItemPickUp>();
-                getpickupscriptonce = false;
-            }
-            if(pickup != null)
-            {
-              pickup.MOUSEHover();
-            }
+          if( getpickupscriptonce == true && pickup != hit.transform.GetComponent<ItemPickUp>())
+          {
+           pickup =  hit.transform.GetComponent<ItemPickUp>();
+              getpickupscriptonce = false;
+          }
+          if(pickup != null)
+          {
+            pickup.MOUSEHover();
+          }
         }
         else if(pickup != null && pickup.IsDisableOrNot == true)
         {
@@ -90,6 +90,7 @@ public sealed class invmanager : MonoBehaviour
                 ItemHolderSway[i].enabled = true;
             }
             ItemHolderSway[0].gameObject.SetActive(true);
+            WeaponHolder.Index = 0;
            // WeaponHolder.GetChild(0).gameObject.SetActive(true);
             
         }
@@ -97,37 +98,31 @@ public sealed class invmanager : MonoBehaviour
         {
             for (int i = 0; i < WeaponHolder.transform.childCount; i++)
             {
-                //WeaponHolder.GetChild(i).gameObject.SetActive(false);
                 ItemHolderSway[i].gameObject.SetActive(false);
                 ItemHolderSway[i].enabled = true;
             }
             ItemHolderSway[1].gameObject.SetActive(true);
-            //  WeaponHolder.GetChild(1).gameObject.SetActive(true);
-            // WeaponHolder.GetComponentInChildren<Sway>().enabled = true;
+            WeaponHolder.Index = 1;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3) && invui.gameObject.activeSelf == false )
         {
             for (int i = 0; i < WeaponHolder.transform.childCount; i++)
             {
-                //WeaponHolder.GetChild(i).gameObject.SetActive(false);
                 ItemHolderSway[i].gameObject.SetActive(false);
                 ItemHolderSway[i].enabled = true;
             }
             ItemHolderSway[2].gameObject.SetActive(true);
-            //WeaponHolder.GetChild(2).gameObject.SetActive(true);
-           // WeaponHolder.GetComponentInChildren<Sway>().enabled = true;
+            WeaponHolder.Index = 2;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4) && invui.gameObject.activeSelf == false )
         {
             for (int i = 0; i < WeaponHolder.transform.childCount; i++)
             {
-                // WeaponHolder.GetChild(i).gameObject.SetActive(false);
                 ItemHolderSway[i].gameObject.SetActive(false);
                 ItemHolderSway[i].enabled = true;
             }
             ItemHolderSway[3].gameObject.SetActive(true);
-            // WeaponHolder.GetChild(3).gameObject.SetActive(true);
-            // WeaponHolder.GetComponentInChildren<Sway>().enabled = true;
+            WeaponHolder.Index = 3;
         }
         #endregion
         // Open Inv --------------------------------------------------------

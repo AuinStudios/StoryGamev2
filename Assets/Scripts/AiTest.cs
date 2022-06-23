@@ -3,7 +3,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 /// <summary>
 ///     What does this AiTest do?
@@ -19,14 +18,12 @@ public sealed class AiTest : MonoBehaviour
         specialattack,
     }
 
-    private float distancebetweenplayer;
+    private float distanceBetweenPlayer;
 
     private Vector3 targetPosition;
 
     private bool isMoving = false;
-    
     private bool isWaiting = false;
-
     private bool isWaitingForAttack = false;
 
     [Header("Agent Propertys")] 
@@ -36,10 +33,8 @@ public sealed class AiTest : MonoBehaviour
     private float agentVisibility = 5.0f;
     [SerializeField, Range(0.1f, 2.0f)]
     private float distanceThreashold = 1.0f;
-     [SerializeField]
+    [SerializeField]
 	private Transform player;
-	[SerializeField]
-	private NavMeshAgent agent;
     [SerializeField]
     private AgentStates agentState = AgentStates.wander;
    // [SerializeField, Range(1.0f, 5.0f)]
@@ -51,7 +46,6 @@ public sealed class AiTest : MonoBehaviour
     [SerializeField, Range(6.0f, 10.0f)]
     private float maxDelay = 8.0f;
     private float currentDelay;
-    
   
     // Start is called before the first frame update
     private void Start()
@@ -59,91 +53,93 @@ public sealed class AiTest : MonoBehaviour
         
 	}
 
-	// Update is called once per frame
-	private void Update()
+#if old
+    #region Old code
+
+    // Update is called once per frame
+    private void Update()
 	{
         switch (agentState)
         {
-                case AgentStates.wander:
+            case AgentStates.wander:
+            {
+                if (!isMoving)
                 {
-                    if (!isMoving)
+                    Debug.Log("Finding new position to patrol.");
+
+                    targetPosition = transform.position + Random.insideUnitSphere * agentVisibility;
+
+                    isMoving = true;
+                }
+                else
+                {
+                    agent.SetDestination(targetPosition);
+
+                    if (agent.remainingDistance <= distanceThreashold && !isWaiting)
                     {
-                        Debug.Log("Finding new position to patrol.");
-
-                        targetPosition = transform.position + Random.insideUnitSphere * agentVisibility;
-
-                        isMoving = true;
-                    }
-                    else
-                    {
-                        agent.SetDestination(targetPosition);
-
-                        if (agent.remainingDistance <= distanceThreashold && !isWaiting)
-                        {
-                            StartCoroutine(WaitForNextPatrol());
-                        }
-                    }
-                    distancebetweenplayer = Vector3.Distance(player.position, transform.position);
-                    if (distancebetweenplayer <= 20)
-                    {
-                        agent.speed = stats.speed * 2;
-                        agentState = AgentStates.aggro;
-
+                        StartCoroutine(WaitForNextPatrol());
                     }
                 }
-                break;
-                case AgentStates.aggro:
+                distanceBetweenPlayer = Vector3.Distance(player.position, transform.position);
+                if (distanceBetweenPlayer <= 20)
                 {
-                    agent.SetDestination(player.position);
-                    distancebetweenplayer = Vector3.Distance(player.position, transform.position);
-                    if (distancebetweenplayer >= 30)
-                    {
-                        agent.speed = stats.speed;
-                        agentState = AgentStates.wander;
-                    }
-                    else if (distancebetweenplayer <= 3)
-                    {
-                        agentState = AgentStates.attack;
-                        agent.speed = stats.speed;
-                    }
-                }
-                break;
-                case AgentStates.attack:
-                {
-                    distancebetweenplayer = Vector3.Distance(player.position, transform.position);
-                    // play some hiting animationa and if player hits it he gets damaged
-                   
-                    
-                    if(distancebetweenplayer > 3 && !isWaitingForAttack)
-                    {
-                        agentState = AgentStates.aggro;
-                        agent.speed = stats.speed * 2;
-                    }
-                    else if (distancebetweenplayer < 2)
-                    {
-                       agent.velocity = new Vector3(0, 0, 0);
-                    } 
-                    else if (!isWaitingForAttack)
-                    {
-                        isWaitingForAttack = true;
-                        StartCoroutine(WaitforNextAttack());
-                    }
-                }
-                break;
-                case AgentStates.die:
-                {
+                    agent.speed = stats.speed * 2;
+                    agentState = AgentStates.aggro;
 
                 }
-                break;
-                case AgentStates.specialattack:
+            }
+            break;
+            case AgentStates.aggro:
+            {
+                agent.SetDestination(player.position);
+                distanceBetweenPlayer = Vector3.Distance(player.position, transform.position);
+                if (distanceBetweenPlayer >= 30)
                 {
-
+                    agent.speed = stats.speed;
+                    agentState = AgentStates.wander;
                 }
-                break;
-                default:
-                break;
+                else if (distanceBetweenPlayer <= 3)
+                {
+                    agentState = AgentStates.attack;
+                    agent.speed = stats.speed;
+                }
+            }
+            break;
+            case AgentStates.attack:
+            {
+                distanceBetweenPlayer = Vector3.Distance(player.position, transform.position);
+                // play some hiting animationa and if player hits it he gets damaged
+               
+                
+                if(distanceBetweenPlayer > 3 && !isWaitingForAttack)
+                {
+                    agentState = AgentStates.aggro;
+                    agent.speed = stats.speed * 2;
+                }
+                else if (distanceBetweenPlayer < 2)
+                {
+                   agent.velocity = new Vector3(0, 0, 0);
+                } 
+                else if (!isWaitingForAttack)
+                {
+                    isWaitingForAttack = true;
+                    StartCoroutine(WaitforNextAttack());
+                }
+            }
+            break;
+            case AgentStates.die:
+            {
+
+            }
+            break;
+            case AgentStates.specialattack:
+            {
+
+            }
+            break;
+            default:
+            break;
         }
-        
 	}
 
     private IEnumerator WaitForNextPatrol()
@@ -170,6 +166,9 @@ public sealed class AiTest : MonoBehaviour
         agent.speed = stats.speed * 2;
         isWaitingForAttack = false;
     }
+    #endregion
+#endif
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
