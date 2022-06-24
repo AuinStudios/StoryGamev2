@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 807921444950009877}
   - component: {fileID: 3229827569515404504}
   - component: {fileID: 127555553856370431}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Fire_Axe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,9 +27,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1168310502250891712}
-  m_LocalRotation: {x: 0.54648817, y: 0.54648817, z: 0.44872114, w: 0.44872114}
+  m_LocalRotation: {x: 0.54648745, y: 0.54648745, z: 0.4487221, w: 0.4487221}
   m_LocalPosition: {x: 23.37, y: 1.021, z: -7.78}
-  m_LocalScale: {x: 0.48772094, y: 0.40087736, z: 0.48772094}
+  m_LocalScale: {x: 0.2219536, y: 0.2219536, z: 0.2219536}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -99,14 +99,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01ffda6e4c0ee0a49ab15d1c0d91f1be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Item: {fileID: 0}
+  Item: {fileID: 11400000, guid: abdb8fb836d8b1b438f8422eeb9c45b3, type: 2}
   inv: {fileID: 0}
   UiPopUpHover: {fileID: 0}
   Player: {fileID: 0}
   WeaponHolder: {fileID: 0}
   UiText: {fileID: 0}
-  boxcollider: {fileID: 0}
-  DisableScript: {fileID: 0}
+  boxcollider: {fileID: 127555553856370431}
+  DisableScript: {fileID: 3229827569515404504}
+  IsDisableOrNot: 0
 --- !u!65 &127555553856370431
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -118,5 +119,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.16191971, y: 4.0850954, z: 1.4493572}
-  m_Center: {x: -0.009733002, y: -0.39858836, z: 0.08668965}
+  m_Size: {x: 0.16191971, y: 4.8224597, z: 1.4493572}
+  m_Center: {x: 0, y: 0, z: 0}

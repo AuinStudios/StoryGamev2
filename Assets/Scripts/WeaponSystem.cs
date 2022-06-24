@@ -18,11 +18,15 @@ public sealed class WeaponSystem : MonoBehaviour
 	public int Index = 0;
 	private float ChargeDamage;
 	private float TimeUntllCharge;
-
+	private float cooldown = 0;
 	// Update is called once per frame
 	private void Update()
 	{
-	 if (Input.GetMouseButton(0) && Items[Index] != null && Items[Index].CanAttack == true )
+		// cooldown
+		cooldown = cooldown > 0 ? cooldown -= Time.deltaTime : cooldown = 0;
+
+
+		if (Input.GetMouseButton(0) && Items[Index] != null && Items[Index].CanAttack == true && cooldown <= 0 )
         {
 			if(TimeUntllCharge <= Items[Index].MaxDamage)
             {
@@ -34,12 +38,8 @@ public sealed class WeaponSystem : MonoBehaviour
                ChargeDamage += Items[Index].MaxDamage / 2 * Time.deltaTime;
 			   Debug.Log(ChargeDamage);
 			}
-			
-			
-			//TimeUntllCharge = TimeUntllCharge < Items[Index].MaxDamage / 100 ? TimeUntllCharge += Time.deltaTime * Items[Index].MaxDamage / 50 : 
-		//	ChargeDamage = ChargeDamage < Items[Index].MaxDamage ? ChargeDamage += Items[Index].MaxDamage / 100 :;
 		}
-		else if (Input.GetMouseButtonUp(0) && Items[Index] != null && Items[Index].CanAttack == true)
+		else if (Input.GetMouseButtonUp(0) && Items[Index] != null && Items[Index].CanAttack == true && cooldown <= 0)
         {
 			TimeUntllCharge = 0;
 			ChargeDamage = 0;
@@ -49,8 +49,8 @@ public sealed class WeaponSystem : MonoBehaviour
             }
             else
             {
-				WeaponAnim.SetBool("Swing", true);
-				//Debug.Log(Items[Index].NormalDamage);
+				cooldown = 1.3f;
+				WeaponAnim.SetTrigger("Swing");
             }
         }
 	}
