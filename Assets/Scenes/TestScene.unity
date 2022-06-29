@@ -206,9 +206,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bc5a7045c9df3b47b31d38b98ca5206, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lerptowardsrecoil: {x: 2, y: -2}
-  returnspeed: 3
-  snapiness: 6
+  lerptowardsrecoil: {x: 1, y: -1}
+  returnspeed: 4
+  snapiness: 5
   head: {fileID: 1963259809}
   WeaponAnim: {fileID: 279889129}
   Items:
@@ -1847,13 +1847,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fire_Axe (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1168310502250891712, guid: c057203f2f1779c4d940fb6ae54b12c5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1980876414675948410, guid: c057203f2f1779c4d940fb6ae54b12c5, type: 3}
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1980876414675948410, guid: c057203f2f1779c4d940fb6ae54b12c5, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.22195357
+      value: 0.22195356
       objectReference: {fileID: 0}
     - target: {fileID: 1980876414675948410, guid: c057203f2f1779c4d940fb6ae54b12c5, type: 3}
       propertyPath: m_LocalScale.y
@@ -1861,7 +1865,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1980876414675948410, guid: c057203f2f1779c4d940fb6ae54b12c5, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.22195354
+      value: 0.22195357
       objectReference: {fileID: 0}
     - target: {fileID: 1980876414675948410, guid: c057203f2f1779c4d940fb6ae54b12c5, type: 3}
       propertyPath: m_LocalPosition.x
