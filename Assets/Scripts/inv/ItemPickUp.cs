@@ -25,7 +25,7 @@ public sealed class ItemPickUp : MonoBehaviour
     [Header("UiTexts")]
     [SerializeField]
     private TextMeshProUGUI UiText;
-    [Header("DisableScript  And MakeBoxColliderTrigger")]
+    [Header("DestoryScript  And DestoryBoxcollider")]
     [SerializeField]
     private BoxCollider boxcollider;
     [SerializeField]
@@ -104,16 +104,8 @@ public sealed class ItemPickUp : MonoBehaviour
 
         }
 
-        boxcollider.isTrigger = true;
-       // for(int i = 0; i < WeaponHolder.Items.Length; i++)
-       // {
-       //     if(WeaponHolder.Items[i] == null)
-       //     {
-       //         WeaponHolder.Items[i] = Item;
-       //     }
-       // }
+        Destroy(boxcollider);
         Destroy(DisableScript);
-        //SwayActive.enabled = true;
 
         UiPopUpHover.localScale = UiPickUpHideSize;
         for (int i = 0; i < inv.slots.Length; i++)

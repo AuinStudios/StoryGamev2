@@ -9,24 +9,29 @@ using UnityEngine;
 /// </summary>
 public sealed class WeaponSystem : MonoBehaviour
 {
-    [Header("Recoil")]
-    private Vector3 pos1;
-    private Vector3 pos2;
-    //[SerializeField]
-    //private float RecoilX = -3;
-    //[SerializeField]
-    //private float RecoilY = -3;
-    //[SerializeField]
-    //private float RecoilZ = -3;
+    #region
+    // [Header("Recoil")]
+    // private Vector3 pos1;
+    // private Vector3 pos2;
+    // //[SerializeField]
+    // //private float RecoilX = -3;
+    // //[SerializeField]
+    // //private float RecoilY = -3;
+    // //[SerializeField]
+    // //private float RecoilZ = -3;
+    // [SerializeField]
+    // private Vector2 lerptowardsrecoil;
+    //
+    // [SerializeField]
+    // private float returnspeed = 6;
+    // [SerializeField]
+    // private float snapiness = 6;
+    // // --------------------------------------------
+    // [SerializeField]
+    // private Transform head;
+    #endregion
     [SerializeField]
-    private Vector2 lerptowardsrecoil;
-
-    [SerializeField]
-    private float returnspeed = 6;
-    [SerializeField]
-    private float snapiness = 6;
-    [SerializeField]
-    private Transform head;
+    private AudioSource hitsound;
     [Header("Anim Stuff")]
     [SerializeField]
     private Animator WeaponAnim;
@@ -35,9 +40,11 @@ public sealed class WeaponSystem : MonoBehaviour
     public ItemsScriptableobject[] Items;
     [HideInInspector]
     public int Index = 0;
+    // float values;
     private float ChargeDamage;
     private float TimeUntllCharge;
-    private float cooldown = 0;
+    private float cooldown = 0.0f;
+    private float SphereRadius = 0.3f;
     // Update is called once per frame
     private void Start()
     {
@@ -60,7 +67,6 @@ public sealed class WeaponSystem : MonoBehaviour
             if (TimeUntllCharge > 0.1f)
             {
                 ChargeDamage += Items[Index].MaxDamage / 2 * Time.deltaTime;
-                Debug.Log(ChargeDamage);
             }
             if(WeaponAnim.GetBool("chargeing") == false && TimeUntllCharge > 0.1f)
             {
@@ -75,43 +81,74 @@ public sealed class WeaponSystem : MonoBehaviour
             {
                 cooldown = 2.3f;
                 WeaponAnim.SetBool("chargeing", false);
-                StartCoroutine(recoil());
+                //StartCoroutine(recoil());
+                StartCoroutine(HitObject(0 , 30));
+                TimeUntllCharge = 0;
             }
             else
             {
+                TimeUntllCharge = 0;
                 cooldown = 1.3f;
                 WeaponAnim.SetTrigger("Swing");
+                StartCoroutine(HitObject(0.3f , 15));
             }
         }
     }
-
-    private IEnumerator recoil()
+    #region recoilstuff
+    //private IEnumerator recoil()
+    //{
+    //    //pos1 = new Vector3(0, 0, 0);
+    //    //down = Quaternion.Euler(10, -20, 0);
+    //
+    //    int i = 0;
+    //    while (i < 30)
+    //    {
+    //        pos1 = Vector3.Lerp(pos1, Vector3.zero, returnspeed * Time.deltaTime);
+    //        pos2 = Vector3.Slerp(pos2, pos1, snapiness * Time.fixedDeltaTime);
+    //        head.localRotation = Quaternion.Euler(pos1);
+    //        pos1 += new Vector3(lerptowardsrecoil.x, lerptowardsrecoil.y, 0);
+    //        i++;
+    //        yield return new WaitForFixedUpdate();
+    //    }
+    //    i = 0;
+    //    while (i < 60)
+    //    {
+    //        pos1 = Vector3.Lerp(pos1, Vector3.zero, returnspeed * Time.deltaTime);
+    //        pos2 = Vector3.Slerp(pos2, pos1, snapiness * Time.fixedDeltaTime);
+    //        head.localRotation = Quaternion.Euler(pos1);
+    //        pos1 += new Vector3(0, 0, 0);
+    //
+    //        i++;
+    //        yield return new WaitForFixedUpdate();
+    //    }
+    //    head.localRotation = Quaternion.Euler(0, 0, 0);
+    //}
+    #endregion
+    private IEnumerator HitObject(float waitboi ,float howlongaxe)
     {
-        //pos1 = new Vector3(0, 0, 0);
-        //down = Quaternion.Euler(10, -20, 0);
-
+        yield return new WaitForSeconds(waitboi);
         int i = 0;
-        while (i < 30)
+        bool test = false;
+        while( i < howlongaxe)
         {
-            pos1 = Vector3.Lerp(pos1, Vector3.zero, returnspeed * Time.deltaTime);
-            pos2 = Vector3.Slerp(pos2, pos1, snapiness * Time.fixedDeltaTime);
-            head.localRotation = Quaternion.Euler(pos1);
-            pos1 += new Vector3(lerptowardsrecoil.x, lerptowardsrecoil.y, 0);
+            
+          if(Physics.SphereCast(transform.position, SphereRadius, transform.up * 2, out RaycastHit hit , 10) && test == false)
+          {
+                Debug.Log(hit);
+                  hitsound.Play();
+                test = true;
+          }
             i++;
             yield return new WaitForFixedUpdate();
         }
-        i = 0;
-        while (i < 60)
-        {
-            pos1 = Vector3.Lerp(pos1, Vector3.zero, returnspeed * Time.deltaTime);
-            pos2 = Vector3.Slerp(pos2, pos1, snapiness * Time.fixedDeltaTime);
-            head.localRotation = Quaternion.Euler(pos1);
-            pos1 += new Vector3(0, 0, 0);
+        
+    }
 
-            i++;
-            yield return new WaitForFixedUpdate();
-        }
-        head.localRotation = Quaternion.Euler(0, 0, 0);
+
+    private void OnDrawGizmos()
+    {
+        Debug.DrawLine(transform.position, transform.position + transform.up * 2);
+        Gizmos.DrawSphere(transform.position + transform.up  * 2 , SphereRadius);
     }
 }
 
