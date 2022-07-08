@@ -21,19 +21,23 @@ public sealed class invmanager : MonoBehaviour
     [Header("WeaponSystem")]
     private WeaponSystem WeaponHolder;
     private ItemsScriptableobject tempobj;
-    [Header("Player Stop Cam And Movement")]
+    [Header("Player Stop Cam And Movement ")]
     [SerializeField]
     private CharacterMovement Player;
     [SerializeField]
     private CameraController MainCam;
+    [Header("TempSlot For Ui")]
     private GameObject HoldTempSlot = null;
     private bool GetTempSlotOnce = false;
 
-    [Header("GetTheSlotsOfItems and getsway")]
+    [Header("Slot Arrays")]
     public Image[] slots;
 
     public Sway[] ItemHolderSway;
 
+    public Animator[] ItemHolderAnimator;
+
+    [Header("the raycast hit cache and doing it only once bool")]
     [HideInInspector]
     public bool getpickupscriptonce = true;
     [HideInInspector]
@@ -127,7 +131,7 @@ public sealed class invmanager : MonoBehaviour
         #endregion
         // Open Inv --------------------------------------------------------
         #region OpenInv
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) && WeaponHolder.WeaponAnim.GetCurrentAnimatorStateInfo(0).IsName("DefaultPose") )
         {
 
             if (invui.gameObject.activeSelf == true)
@@ -137,6 +141,7 @@ public sealed class invmanager : MonoBehaviour
                 Cursor.visible = false;
                 Player.enabled = true;
                 MainCam.enabled = true;
+                WeaponHolder.enabled = true;
                 StartCoroutine(OpeninvOrClose());
                 for (int i = 0; i < WeaponHolder.transform.childCount; i++)
                 {
@@ -151,7 +156,7 @@ public sealed class invmanager : MonoBehaviour
                 Cursor.visible = true;
                 Player.enabled = false;
                 MainCam.enabled = false;
-
+                WeaponHolder.enabled = false;
                 for (int i = 0; i < WeaponHolder.transform.childCount; i++)
                 {
                     ItemHolderSway[i].enabled = false;

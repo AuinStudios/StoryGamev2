@@ -22,14 +22,15 @@ public sealed class ItemPickUp : MonoBehaviour
     // private Transform ItemPrefab;
     [SerializeField]
     private WeaponSystem WeaponHolder;
+
     [Header("UiTexts")]
     [SerializeField]
     private TextMeshProUGUI UiText;
-    [Header("DestoryScript  And DestoryBoxcollider")]
-    [SerializeField]
-    private BoxCollider boxcollider;
-    [SerializeField]
-    private ItemPickUp DisableScript;
+    //[Header("DestoryScript  And DestoryBoxcollider")]
+    //[SerializeField]
+    //private BoxCollider boxcollider;
+    //[SerializeField]
+    //private ItemPickUp DisableScript;
     //[SerializeField]
     // private Sway SwayActive;
     private float LerpTime = 0;
@@ -82,16 +83,16 @@ public sealed class ItemPickUp : MonoBehaviour
             if (WeaponHolder.transform.GetChild(i).childCount > 0)
             {
                 inv.ItemHolderSway[i].enabled = false;
-               // WeaponHolder.transform.GetChild(i).GetComponentInChildren<Sway>().enabled = false;
+                // WeaponHolder.transform.GetChild(i).GetComponentInChildren<Sway>().enabled = false;
             }
             inv.ItemHolderSway[i].gameObject.SetActive(false);
-          //  WeaponHolder.transform.GetChild(i).gameObject.SetActive(false);
+            //  WeaponHolder.transform.GetChild(i).gameObject.SetActive(false);
 
         }
 
         for (int i = 0; i < WeaponHolder.transform.childCount; i++)
         {
-            if (WeaponHolder.transform.GetChild(i).childCount == 0)
+            if (WeaponHolder.transform.GetChild(i).childCount == 0 && Item.CanAttack == false)
             {
                 // WeaponHolder.transform.GetChild(i).gameObject.SetActive(true);
                 inv.ItemHolderSway[i].gameObject.SetActive(true);
@@ -101,11 +102,28 @@ public sealed class ItemPickUp : MonoBehaviour
                 WeaponHolder.Items[i] = Item;
                 break;
             }
-
+            else if (Item.CanAttack == true)
+            {
+                transform.GetChild(0).gameObject.SetActive(true);
+                inv.ItemHolderSway[i].gameObject.SetActive(true);
+                transform.GetChild(0).position = WeaponHolder.transform.position;
+                transform.GetChild(0).rotation = WeaponHolder.transform.rotation;
+                WeaponHolder.RaycastPosTemp =  GameObject.Find("FireAxe").transform;
+                transform.GetChild(0).GetChild(i).parent = WeaponHolder.transform.GetChild(i);
+                
+                // Gets the animator from the itemholder -------------------------------------------------------------------------------------------------------------------------------
+                WeaponHolder.WeaponAnim = inv.ItemHolderAnimator[i];
+                // somehow this fixes the animation from bugging out because the animator doesnt render that it has the child fast enough so we close it and open it again to refresh it
+                WeaponHolder.WeaponAnim.gameObject.SetActive(false);
+                WeaponHolder.WeaponAnim.gameObject.SetActive(true);
+                //gets this item and puts it in the inv of items
+                WeaponHolder.Items[i] = Item;
+                break;
+            }
         }
 
-        Destroy(boxcollider);
-        Destroy(DisableScript);
+        // Destroy(boxcollider);
+        // Destroy(DisableScript);
 
         UiPopUpHover.localScale = UiPickUpHideSize;
         for (int i = 0; i < inv.slots.Length; i++)
@@ -119,6 +137,8 @@ public sealed class ItemPickUp : MonoBehaviour
             }
 
         }
+
+        Destroy(gameObject);
     }
 
 

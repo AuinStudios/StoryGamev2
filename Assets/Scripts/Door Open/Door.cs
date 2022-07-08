@@ -27,12 +27,12 @@ public sealed class Door : MonoBehaviour
     }
     public void OpenDoor()
     {
-        if(CanActiveOrNot == true)
+        if (CanActiveOrNot == true)
         {
-         StartCoroutine(IenumOpenDoor());
+            StartCoroutine(IenumOpenDoor());
             CanActiveOrNot = false;
         }
-        
+
     }
     private IEnumerator IenumOpenDoor()
     {
@@ -75,6 +75,6 @@ public sealed class Door : MonoBehaviour
         Gizmos.DrawLine(StartPos, EndPos);
 
         //Debug.DrawLine(transform.position, transform.position + transform.up * -2);
-      //  Gizmos.DrawCube(transform.position + transform.up * -2, transform.localScale);
+        //  Gizmos.DrawCube(transform.position + transform.up * -2, transform.localScale);
     }
 }

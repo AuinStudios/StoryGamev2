@@ -30,26 +30,25 @@ public sealed class WeaponSystem : MonoBehaviour
     // [SerializeField]
     // private Transform head;
     #endregion
+    [Header("Sound Effect")]
     [SerializeField]
     private AudioSource hitsound;
     [Header("Anim Stuff")]
-    [SerializeField]
-    private Animator WeaponAnim;
+    [HideInInspector]
+    public Animator WeaponAnim;
     [Header("WeaponSwapValues")]
     [HideInInspector]
     public ItemsScriptableobject[] Items;
     [HideInInspector]
     public int Index = 0;
-    // float values;
+    [Header("Floats")]
     private float ChargeDamage;
     private float TimeUntllCharge;
     private float cooldown = 0.0f;
     private float SphereRadius = 0.3f;
-    // Update is called once per frame
-    private void Start()
-    {
-
-    }
+    [Header("TempRaycastPos")]
+    [HideInInspector]
+    public Transform RaycastPosTemp;
     private void Update()
     {
         // cooldown ---------------------------------------------------------------------------------------
@@ -57,9 +56,9 @@ public sealed class WeaponSystem : MonoBehaviour
         // recoil ---------------------------------------------------------------------------------------
 
         // weaponsystem ---------------------------------------------------------------------------------------
-        if (Input.GetMouseButton(0) && Items[Index] != null && Items[Index].CanAttack == true && cooldown <= 0)
+        if (Input.GetMouseButton(0) && Items[Index] != null && Items[Index].CanAttack == true && cooldown <= 0 )
         {
-            if (TimeUntllCharge <= Items[Index].MaxDamage)
+            if (TimeUntllCharge <= Items[Index].MaxDamage && cooldown <= 0)
             {
                 TimeUntllCharge += 0.35f * Time.deltaTime;
 
@@ -68,7 +67,7 @@ public sealed class WeaponSystem : MonoBehaviour
             {
                 ChargeDamage += Items[Index].MaxDamage / 2 * Time.deltaTime;
             }
-            if(WeaponAnim.GetBool("chargeing") == false && TimeUntllCharge > 0.1f)
+            if (WeaponAnim.GetBool("chargeing") == false && TimeUntllCharge > 0.1f)
             {
                 WeaponAnim.SetBool("chargeing", true);
             }
@@ -79,18 +78,18 @@ public sealed class WeaponSystem : MonoBehaviour
             //ChargeDamage = 0;
             if (TimeUntllCharge > 0.1f)
             {
-                cooldown = 2.3f;
+                cooldown = 4.3f;
                 WeaponAnim.SetBool("chargeing", false);
                 //StartCoroutine(recoil());
-                StartCoroutine(HitObject(0 , 30));
+                StartCoroutine(HitObject(0, 45));
                 TimeUntllCharge = 0;
             }
             else
             {
                 TimeUntllCharge = 0;
-                cooldown = 1.3f;
+                cooldown = 3.3f;
                 WeaponAnim.SetTrigger("Swing");
-                StartCoroutine(HitObject(0.3f , 15));
+                StartCoroutine(HitObject(1f, 30));
             }
         }
     }
@@ -124,31 +123,34 @@ public sealed class WeaponSystem : MonoBehaviour
     //    head.localRotation = Quaternion.Euler(0, 0, 0);
     //}
     #endregion
-    private IEnumerator HitObject(float waitboi ,float howlongaxe)
+    private IEnumerator HitObject(float waitboi, float howlongaxe)
     {
         yield return new WaitForSeconds(waitboi);
         int i = 0;
         bool test = false;
-        while( i < howlongaxe)
+        while (i < howlongaxe)
         {
-            
-          if(Physics.SphereCast(transform.position, SphereRadius, transform.up * 2, out RaycastHit hit , 10) && test == false)
-          {
-                Debug.Log(hit);
-                  hitsound.Play();
+
+            if (Physics.SphereCast(RaycastPosTemp.position, SphereRadius, RaycastPosTemp.up * -2, out RaycastHit hit, 10) && test == false)
+            {
+                hitsound.Play();
                 test = true;
-          }
+            }
             i++;
             yield return new WaitForFixedUpdate();
         }
-        
+
     }
 
 
     private void OnDrawGizmos()
     {
-        Debug.DrawLine(transform.position, transform.position + transform.up * 2);
-        Gizmos.DrawSphere(transform.position + transform.up  * 2 , SphereRadius);
+        if(WeaponAnim != null && WeaponAnim.transform.childCount >= 1)
+        {
+         Debug.DrawLine(RaycastPosTemp.position, RaycastPosTemp.position + RaycastPosTemp.up * -2);
+         Gizmos.DrawSphere(RaycastPosTemp.position + RaycastPosTemp.up * -2, SphereRadius);
+        }
+        
     }
 }
 
