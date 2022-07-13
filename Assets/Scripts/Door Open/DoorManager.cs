@@ -9,6 +9,7 @@ using UnityEngine;
 /// </summary>
 public sealed class DoorManager : MonoBehaviour
 {
+    [SerializeField]
     private List<Door> Doors;
     [SerializeField]
     private Transform Player;
