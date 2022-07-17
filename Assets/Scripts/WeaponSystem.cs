@@ -34,7 +34,7 @@ public sealed class WeaponSystem : MonoBehaviour
     [SerializeField]
     private AudioSource hitsound;
     [Header("Anim Stuff")]
-    [HideInInspector]
+    
     public Animator WeaponAnim;
     [Header("WeaponSwapValues")]
     [HideInInspector]
@@ -45,10 +45,11 @@ public sealed class WeaponSystem : MonoBehaviour
     private float ChargeDamage;
     private float TimeUntllCharge;
     private float cooldown = 0.0f;
-    private float SphereRadius = 0.3f;
-    [Header("TempRaycastPos")]
-    [HideInInspector]
-    public Transform RaycastPosTemp;
+    // private float SphereRadius = 0.3f;
+    [Header("WeaponCollider")]
+    [SerializeField]
+    private BoxCollider[] WeaponCollider;
+    private BoxCollider CurrentCollider;
     private void Update()
     {
         // cooldown ---------------------------------------------------------------------------------------
@@ -56,7 +57,7 @@ public sealed class WeaponSystem : MonoBehaviour
         // recoil ---------------------------------------------------------------------------------------
 
         // weaponsystem ---------------------------------------------------------------------------------------
-        if (Input.GetMouseButton(0) && Items[Index] != null && Items[Index].CanAttack == true && cooldown <= 0 )
+        if (Input.GetMouseButton(0) && Items[Index] != null && Items[Index].CanAttack == true && cooldown <= 0)
         {
             if (TimeUntllCharge <= Items[Index].MaxDamage && cooldown <= 0)
             {
@@ -69,6 +70,7 @@ public sealed class WeaponSystem : MonoBehaviour
             }
             if (WeaponAnim.GetBool("chargeing") == false && TimeUntllCharge > 0.1f)
             {
+                WeaponAnim.SetInteger("CanWeaponSwap", 1);
                 WeaponAnim.SetBool("chargeing", true);
             }
         }
@@ -89,7 +91,8 @@ public sealed class WeaponSystem : MonoBehaviour
                 TimeUntllCharge = 0;
                 cooldown = 3.3f;
                 WeaponAnim.SetTrigger("Swing");
-                StartCoroutine(HitObject(1f, 30));
+                WeaponAnim.SetInteger("CanWeaponSwap", 1);
+                StartCoroutine(HitObject(0.8f, 30));
             }
         }
     }
@@ -125,32 +128,32 @@ public sealed class WeaponSystem : MonoBehaviour
     #endregion
     private IEnumerator HitObject(float waitboi, float howlongaxe)
     {
+        for(int b = 0; b < WeaponCollider.Length; b++)
+        {
+            // gets the item holder  and checks if its active or not
+            if (WeaponCollider[b].gameObject.transform.parent.parent.parent.parent.gameObject.activeSelf == true )
+            {
+                CurrentCollider = WeaponCollider[b];
+                break;
+            }
+        }
         yield return new WaitForSeconds(waitboi);
+        CurrentCollider.enabled = true;
+       
         int i = 0;
-        bool test = false;
         while (i < howlongaxe)
         {
-
-            if (Physics.SphereCast(RaycastPosTemp.position, SphereRadius, RaycastPosTemp.up * -2, out RaycastHit hit, 10) && test == false)
-            {
-                hitsound.Play();
-                test = true;
-            }
             i++;
             yield return new WaitForFixedUpdate();
         }
-
+        CurrentCollider.enabled = false;
+        //yield return new WaitUntil(() => !WeaponAnim.GetCurrentAnimatorStateInfo(0).IsName("DefaultPose"));
+       // Debug.Log("a");
+        WeaponAnim.SetInteger("CanWeaponSwap", 0);
     }
-
-
-    private void OnDrawGizmos()
+    private void OnTriggerEnter(Collider other)
     {
-        if(WeaponAnim != null && WeaponAnim.transform.childCount >= 1)
-        {
-         Debug.DrawLine(RaycastPosTemp.position, RaycastPosTemp.position + RaycastPosTemp.up * -2);
-         Gizmos.DrawSphere(RaycastPosTemp.position + RaycastPosTemp.up * -2, SphereRadius);
-        }
-        
+        hitsound.Play();
     }
 }
 

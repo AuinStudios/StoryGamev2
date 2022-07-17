@@ -85,20 +85,18 @@ public sealed class invmanager : MonoBehaviour
         }
         // Weapon Swap ------------------------------------------------------
         #region uglycode
-        if (Input.GetKeyDown(KeyCode.Alpha1) && invui.gameObject.activeSelf == false)
+        if (Input.GetKeyDown(KeyCode.Alpha1) && invui.gameObject.activeSelf == false && WeaponHolder.WeaponAnim.GetInteger("CanWeaponSwap") != 1)
         {
             for (int i = 0; i < WeaponHolder.transform.childCount; i++)
             {
-                //WeaponHolder.GetChild(i).gameObject.SetActive(false);
                 ItemHolderSway[i].gameObject.SetActive(false);
                 ItemHolderSway[i].enabled = true;
             }
             ItemHolderSway[0].gameObject.SetActive(true);
             WeaponHolder.Index = 0;
-            // WeaponHolder.GetChild(0).gameObject.SetActive(true);
-
+            WeaponHolder.WeaponAnim = ItemHolderAnimator[WeaponHolder.Index];
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2) && invui.gameObject.activeSelf == false)
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && invui.gameObject.activeSelf == false && WeaponHolder.WeaponAnim.GetInteger("CanWeaponSwap") != 1)
         {
             for (int i = 0; i < WeaponHolder.transform.childCount; i++)
             {
@@ -107,8 +105,9 @@ public sealed class invmanager : MonoBehaviour
             }
             ItemHolderSway[1].gameObject.SetActive(true);
             WeaponHolder.Index = 1;
+            WeaponHolder.WeaponAnim = ItemHolderAnimator[WeaponHolder.Index];
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3) && invui.gameObject.activeSelf == false)
+        else if (Input.GetKeyDown(KeyCode.Alpha3) && invui.gameObject.activeSelf == false && WeaponHolder.WeaponAnim.GetInteger("CanWeaponSwap") != 1)
         {
             for (int i = 0; i < WeaponHolder.transform.childCount; i++)
             {
@@ -117,8 +116,9 @@ public sealed class invmanager : MonoBehaviour
             }
             ItemHolderSway[2].gameObject.SetActive(true);
             WeaponHolder.Index = 2;
+            WeaponHolder.WeaponAnim = ItemHolderAnimator[WeaponHolder.Index];
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4) && invui.gameObject.activeSelf == false)
+        else if (Input.GetKeyDown(KeyCode.Alpha4) && invui.gameObject.activeSelf == false && WeaponHolder.WeaponAnim.GetInteger("CanWeaponSwap") != 1)
         {
             for (int i = 0; i < WeaponHolder.transform.childCount; i++)
             {
@@ -127,6 +127,7 @@ public sealed class invmanager : MonoBehaviour
             }
             ItemHolderSway[3].gameObject.SetActive(true);
             WeaponHolder.Index = 3;
+            WeaponHolder.WeaponAnim = ItemHolderAnimator[WeaponHolder.Index];
         }
         #endregion
         // Open Inv --------------------------------------------------------

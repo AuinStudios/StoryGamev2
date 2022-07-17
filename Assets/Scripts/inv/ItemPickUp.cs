@@ -104,12 +104,16 @@ public sealed class ItemPickUp : MonoBehaviour
             }
             else if (Item.CanAttack == true)
             {
+                if(WeaponHolder.transform.GetChild(i).childCount > 0)
+                {
+                    i++;
+                   
+                }
                 transform.GetChild(0).gameObject.SetActive(true);
                 inv.ItemHolderSway[i].gameObject.SetActive(true);
                 transform.GetChild(0).position = WeaponHolder.transform.position;
                 transform.GetChild(0).rotation = WeaponHolder.transform.rotation;
-                WeaponHolder.RaycastPosTemp =  GameObject.Find("FireAxe").transform;
-                transform.GetChild(0).GetChild(i).parent = WeaponHolder.transform.GetChild(i);
+                transform.GetChild(0).GetChild(0).parent = WeaponHolder.transform.GetChild(i);
                 
                 // Gets the animator from the itemholder -------------------------------------------------------------------------------------------------------------------------------
                 WeaponHolder.WeaponAnim = inv.ItemHolderAnimator[i];
@@ -118,6 +122,7 @@ public sealed class ItemPickUp : MonoBehaviour
                 WeaponHolder.WeaponAnim.gameObject.SetActive(true);
                 //gets this item and puts it in the inv of items
                 WeaponHolder.Items[i] = Item;
+                WeaponHolder.Index = i;
                 break;
             }
         }

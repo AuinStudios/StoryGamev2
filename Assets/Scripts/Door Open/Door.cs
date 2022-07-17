@@ -129,9 +129,7 @@ public sealed class Door : MonoBehaviour
                     SecoundDoorPos = new Vector3(SecoundDoorPos.x + 2, SecoundDoorPos.y, SecoundDoorPos.z);
                     while (i < 60)
                     {
-
                         bool CheckFirstDoor = Physics.CheckBox(CheckBoxPos, FirstDoor.localScale * 1.1f, FirstDoor.rotation, layer);
-                        Debug.Log(CheckFirstDoor);
                         if (CheckFirstDoor)
                         {
 
