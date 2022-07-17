@@ -132,7 +132,7 @@ public sealed class invmanager : MonoBehaviour
         #endregion
         // Open Inv --------------------------------------------------------
         #region OpenInv
-        if (Input.GetKeyDown(KeyCode.Q) && WeaponHolder.WeaponAnim.GetCurrentAnimatorStateInfo(0).IsName("DefaultPose") )
+        if (Input.GetKeyDown(KeyCode.Q) && WeaponHolder.WeaponAnim.GetInteger("CanWeaponSwap") != 1)
         {
 
             if (invui.gameObject.activeSelf == true)
@@ -140,13 +140,13 @@ public sealed class invmanager : MonoBehaviour
 
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
+                MainCam.CanMoveCamera = true;
                 Player.enabled = true;
-                MainCam.enabled = true;
                 WeaponHolder.enabled = true;
                 StartCoroutine(OpeninvOrClose());
                 for (int i = 0; i < WeaponHolder.transform.childCount; i++)
                 {
-                    ItemHolderSway[i].enabled = true;
+                    ItemHolderSway[i].CanSway = true;
                 }
 
 
@@ -155,12 +155,12 @@ public sealed class invmanager : MonoBehaviour
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                MainCam.CanMoveCamera = false;
                 Player.enabled = false;
-                MainCam.enabled = false;
                 WeaponHolder.enabled = false;
                 for (int i = 0; i < WeaponHolder.transform.childCount; i++)
                 {
-                    ItemHolderSway[i].enabled = false;
+                    ItemHolderSway[i].CanSway = false;
                 }
                 StartCoroutine(OpeninvOrClose());
             }

@@ -70,7 +70,9 @@ public sealed class WeaponSystem : MonoBehaviour
             }
             if (WeaponAnim.GetBool("chargeing") == false && TimeUntllCharge > 0.1f)
             {
+                // this is basically a bool for the animator to not be able to weapon swap or open inv
                 WeaponAnim.SetInteger("CanWeaponSwap", 1);
+
                 WeaponAnim.SetBool("chargeing", true);
             }
         }
@@ -91,6 +93,7 @@ public sealed class WeaponSystem : MonoBehaviour
                 TimeUntllCharge = 0;
                 cooldown = 3.3f;
                 WeaponAnim.SetTrigger("Swing");
+                // this is basically a bool for the animator to not be able to weapon swap or open inv
                 WeaponAnim.SetInteger("CanWeaponSwap", 1);
                 StartCoroutine(HitObject(0.8f, 30));
             }
@@ -148,7 +151,6 @@ public sealed class WeaponSystem : MonoBehaviour
         }
         CurrentCollider.enabled = false;
         //yield return new WaitUntil(() => !WeaponAnim.GetCurrentAnimatorStateInfo(0).IsName("DefaultPose"));
-       // Debug.Log("a");
         WeaponAnim.SetInteger("CanWeaponSwap", 0);
     }
     private void OnTriggerEnter(Collider other)

@@ -10,31 +10,30 @@ public class CameraController : MonoBehaviour
     private readonly float yRotationLimit = 75.0f;
     private float currentYRotation;
     private Vector2 mousePosition = Vector2.zero;
-
+    [HideInInspector]
+    public bool CanMoveCamera = true;
     // Start is called before the first frame update
     private void Start()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        
-      
+
+
     }
     // Update is called once per frame
     private void Update()
     {
-        mousePosition.x += Input.GetAxis("Mouse X") * settings.mouseSensitivity;
-        mousePosition.y = Input.GetAxis("Mouse Y") * settings.mouseSensitivity;
-        currentYRotation =  Mathf.Clamp(currentYRotation, -yRotationLimit, yRotationLimit);
-        currentYRotation -= mousePosition.y;
-        transform.rotation = Quaternion.Euler(currentYRotation, mousePosition.x, 0);
-        #region old script
-        //  currentYRotation = Mathf.Clamp(currentYRotation, -yRotationLimit, yRotationLimit);
-        //currentYRotation += mousePosition.y;
+        if (CanMoveCamera == true)
+        {
+            mousePosition.x += Input.GetAxis("Mouse X") * settings.mouseSensitivity;
+            mousePosition.y = Input.GetAxis("Mouse Y") * settings.mouseSensitivity;
 
-        // Quaternion xQuaternion = Quaternion.AngleAxis(mousePosition.x, Vector3.up);
-        // Quaternion yQuaternion = Quaternion.AngleAxis(currentYRotation, Vector3.left);
-
-        // transform.localRotation = Quaternion.Lerp(transform.localRotation, xQuaternion * yQuaternion, Time.deltaTime * 10.0f);
-        #endregion
+            
+            currentYRotation += mousePosition.y;
+        }
+        currentYRotation = Mathf.Clamp(currentYRotation, -yRotationLimit, yRotationLimit);
+        Quaternion xQuaternion = Quaternion.Euler(0, mousePosition.x, 0);
+        Quaternion yQuaternion = Quaternion.Euler(-currentYRotation, 0, 0);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, xQuaternion * yQuaternion, Time.deltaTime * 10.0f);
     }
 }
