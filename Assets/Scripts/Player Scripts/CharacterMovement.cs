@@ -160,6 +160,7 @@ public class CharacterMovement : MonoBehaviour
         // Movement -------------------------------------------------------------------------------------------
         move = currentRunSpeedMultiplier * walkSpeed * (Vector3.Normalize(mainCam.right * direction.x + ori.forward * direction.y));
         player.Move(move * Time.deltaTime);
+
         // CamDir----------------------------------------------------------------------------------------------
         OriQuaternion = new Quaternion(0, mainCam.rotation.y , 0 , mainCam.rotation.w);
         ori.rotation = OriQuaternion;

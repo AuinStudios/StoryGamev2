@@ -155,7 +155,11 @@ public sealed class WeaponSystem : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        hitsound.Play();
+        if (!other.CompareTag("Player"))
+        {
+          hitsound.Play();
+        }
+       
     }
 }
 
