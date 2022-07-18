@@ -152,6 +152,11 @@ public sealed class WeaponSystem : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         CurrentCollider.enabled = false;
+        while (!WeaponAnim.GetCurrentAnimatorStateInfo(0).IsName("DefaultPose"))
+        {
+            yield return new WaitForFixedUpdate();
+        }
+        WeaponAnim.SetInteger("CanWeaponSwap", 0);
         //yield return new WaitUntil(() => !WeaponAnim.GetCurrentAnimatorStateInfo(0).IsName("DefaultPose"));
     }
     private void OnTriggerEnter(Collider other)
