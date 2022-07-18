@@ -153,7 +153,6 @@ public sealed class WeaponSystem : MonoBehaviour
         }
         CurrentCollider.enabled = false;
         //yield return new WaitUntil(() => !WeaponAnim.GetCurrentAnimatorStateInfo(0).IsName("DefaultPose"));
-        WeaponAnim.SetInteger("CanWeaponSwap", 0);
     }
     private void OnTriggerEnter(Collider other)
     {

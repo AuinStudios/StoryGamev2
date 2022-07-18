@@ -92,29 +92,41 @@ public sealed class ItemPickUp : MonoBehaviour
 
         for (int i = 0; i < WeaponHolder.transform.childCount; i++)
         {
-            if (WeaponHolder.transform.GetChild(i).childCount == 0 && Item.CanAttack == false)
+            //if ( Item.CanAttack == false)
+            //{
+            //    // WeaponHolder.transform.GetChild(i).gameObject.SetActive(true);
+            //    transform.GetChild(0).gameObject.SetActive(true);
+            //    inv.ItemHolderSway[i].gameObject.SetActive(true);
+            //    transform.GetChild(0).position = WeaponHolder.transform.position;
+            //    transform.GetChild(0).rotation = WeaponHolder.transform.rotation;
+            //    transform.GetChild(0).GetChild(0).parent = WeaponHolder.transform.GetChild(i);
+            //
+            //    // Gets the animator from the itemholder -------------------------------------------------------------------------------------------------------------------------------
+            //    WeaponHolder.WeaponAnim = inv.ItemHolderAnimator[i];
+            //    // somehow this fixes the animation from bugging out because the animator doesnt render that it has the child fast enough so we close it and open it again to refresh it
+            //    WeaponHolder.WeaponAnim.gameObject.SetActive(false);
+            //    WeaponHolder.WeaponAnim.gameObject.SetActive(true);
+            //    //gets this item and puts it in the inv of items
+            //    WeaponHolder.Items[i] = Item;
+            //    WeaponHolder.Index = i;
+            //    break;
+            //}
+            // else if (Item.CanAttack == true)
+            // {
+            if (inv.ItemHolderSway[i].transform.childCount > 0)
             {
-                // WeaponHolder.transform.GetChild(i).gameObject.SetActive(true);
-                inv.ItemHolderSway[i].gameObject.SetActive(true);
-                transform.position = WeaponHolder.transform.position;
-                transform.rotation = WeaponHolder.transform.rotation;
-                transform.parent = WeaponHolder.transform.GetChild(i);
-                WeaponHolder.Items[i] = Item;
-                break;
+              // for some reason if i leave it empty it just changes the slot to the next instead of glitching IDK HOW THIS WORKS
             }
-            else if (Item.CanAttack == true)
+            else
             {
-                if(WeaponHolder.transform.GetChild(i).childCount > 0)
-                {
-                    i++;
-                   
-                }
+
+
                 transform.GetChild(0).gameObject.SetActive(true);
                 inv.ItemHolderSway[i].gameObject.SetActive(true);
                 transform.GetChild(0).position = WeaponHolder.transform.position;
                 transform.GetChild(0).rotation = WeaponHolder.transform.rotation;
                 transform.GetChild(0).GetChild(0).parent = WeaponHolder.transform.GetChild(i);
-                
+
                 // Gets the animator from the itemholder -------------------------------------------------------------------------------------------------------------------------------
                 WeaponHolder.WeaponAnim = inv.ItemHolderAnimator[i];
                 // somehow this fixes the animation from bugging out because the animator doesnt render that it has the child fast enough so we close it and open it again to refresh it
@@ -125,6 +137,7 @@ public sealed class ItemPickUp : MonoBehaviour
                 WeaponHolder.Index = i;
                 break;
             }
+          //  }
         }
 
         // Destroy(boxcollider);
