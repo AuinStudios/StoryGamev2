@@ -50,6 +50,9 @@ public sealed class WeaponSystem : MonoBehaviour
     [SerializeField]
     private BoxCollider[] WeaponCollider;
     private BoxCollider CurrentCollider;
+    [Header("RecoilStuff")]
+    [SerializeField]
+    private Transform cam;
     private void Update()
     {
         // cooldown ---------------------------------------------------------------------------------------
@@ -72,7 +75,7 @@ public sealed class WeaponSystem : MonoBehaviour
             {
                 // this is basically a bool for the animator to not be able to weapon swap or open inv
                 WeaponAnim.SetInteger("CanWeaponSwap", 1);
-
+                StartCoroutine(recoil());
                 WeaponAnim.SetBool("chargeing", true);
             }
         }
@@ -100,34 +103,33 @@ public sealed class WeaponSystem : MonoBehaviour
         }
     }
     #region recoilstuff
-    //private IEnumerator recoil()
-    //{
-    //    //pos1 = new Vector3(0, 0, 0);
-    //    //down = Quaternion.Euler(10, -20, 0);
-    //
-    //    int i = 0;
-    //    while (i < 30)
-    //    {
-    //        pos1 = Vector3.Lerp(pos1, Vector3.zero, returnspeed * Time.deltaTime);
-    //        pos2 = Vector3.Slerp(pos2, pos1, snapiness * Time.fixedDeltaTime);
-    //        head.localRotation = Quaternion.Euler(pos1);
-    //        pos1 += new Vector3(lerptowardsrecoil.x, lerptowardsrecoil.y, 0);
-    //        i++;
-    //        yield return new WaitForFixedUpdate();
-    //    }
-    //    i = 0;
-    //    while (i < 60)
-    //    {
-    //        pos1 = Vector3.Lerp(pos1, Vector3.zero, returnspeed * Time.deltaTime);
-    //        pos2 = Vector3.Slerp(pos2, pos1, snapiness * Time.fixedDeltaTime);
-    //        head.localRotation = Quaternion.Euler(pos1);
-    //        pos1 += new Vector3(0, 0, 0);
-    //
-    //        i++;
-    //        yield return new WaitForFixedUpdate();
-    //    }
-    //    head.localRotation = Quaternion.Euler(0, 0, 0);
-    //}
+   private IEnumerator recoil()
+   {
+        //pos1 = new Vector3(0, 0, 0);
+        //down = Quaternion.Euler(10, -20, 0);
+        Quaternion test = Quaternion.Euler(0, 10.35f, 0);
+        Quaternion test2 = Quaternion.Euler(-15.629f, 0, 0);
+       int i = 0;
+        float timelerp = 0;
+       while (i < 60)
+       {
+           
+            timelerp += 0.15f * Time.deltaTime;
+            cam.localRotation = Quaternion.Lerp(cam.localRotation, test * test2, timelerp / 1);
+            i++;
+           yield return new WaitForFixedUpdate();
+       }
+       i = 0;
+        yield return new WaitUntil(() => Input.GetMouseButtonUp(0));
+       while (i < 60)
+       {
+
+            cam.localRotation = Quaternion.Lerp(cam.localRotation, Quaternion.Euler(0,0,0), Time.deltaTime * 10.0f);
+            i++;
+           yield return new WaitForFixedUpdate();
+       }
+       cam.localRotation = Quaternion.Euler(0, 0, 0);
+   }
     #endregion
     private IEnumerator HitObject(float waitboi, float howlongaxe)
     {
