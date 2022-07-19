@@ -136,6 +136,15 @@ public class CharacterMovement : MonoBehaviour
     private bool cansprint = true;
 
     private Quaternion OriQuaternion;
+
+
+    [Header("Animation Curves for HeadBop")]
+    private float XHeadBopAmplfied , YHeadBopAmplfied;
+    private float XMutlplySpeed, YmutlplySpeed;
+    private Vector2 CurvePos;
+    private Vector3 CameraHoldPos;
+    private float Timer = 0.5f;
+    float i = 0;
     // Update is called once per frame
     void Update()
     {
@@ -146,16 +155,27 @@ public class CharacterMovement : MonoBehaviour
         if (Input.GetButton("Run") && cansprint == true  )
         {
             currentRunSpeedMultiplier = runSpeedMultiplier;
-
+         
             SliderImage.fillAmount = direction.x != 0 || direction.y != 0 ? SliderImage.fillAmount -= 0.1f * Time.deltaTime : SliderImage.fillAmount += 0.02f * Time.deltaTime;
             cansprint = SliderImage.fillAmount < 0.05f ? cansprint = false :cansprint = true;
+            //HeadBop Values -------------------------------------------------
+            XHeadBopAmplfied = 0.25f;
+            YHeadBopAmplfied = -0.3f;
+            XMutlplySpeed = 6;
+            YmutlplySpeed = 12;
         }
-        else if(SliderImage.fillAmount < 1)
+        else// if(SliderImage.fillAmount < 1)
         {
             currentRunSpeedMultiplier = 1.0f;
             SliderImage.fillAmount += 0.02f * Time.deltaTime;
-        
+           
             cansprint = SliderImage.fillAmount > 0.15f ? cansprint = true : cansprint = false;    
+            //HeadBop Values -------------------------------------------------
+              XHeadBopAmplfied = 0.15f;
+              YHeadBopAmplfied = -0.2f;
+            XMutlplySpeed = 3;
+            YmutlplySpeed = 6;
+
         }
         // Movement -------------------------------------------------------------------------------------------
         move = currentRunSpeedMultiplier * walkSpeed * (Vector3.Normalize(mainCam.right * direction.x + ori.forward * direction.y));
@@ -167,8 +187,33 @@ public class CharacterMovement : MonoBehaviour
         // Gravity -------------------------------------------------------------------------------------------
         velocity.y = GetGravityForce();
         player.Move(velocity * Time.deltaTime);
-        // Camera Target ---------------------------
-        mainCam.position = cameraTarget.position;
+        // Camera Target And HeadbOP ---------------------------
+        
+       
+
+        if(direction.x != 0 || direction.y != 0)
+        {
+            i = 0;
+            Timer += Time.deltaTime;
+            CameraHoldPos = cameraTarget.position + OffsetHeadBop();
+            mainCam.position = Vector3.Lerp(mainCam.position, CameraHoldPos, 5f * Time.deltaTime);
+            cameraTarget.localRotation = mainCam.localRotation;
+           // Vector3 newPosition = new Vector3(Mathf.Cos(Time.time * 3) * 0.3f,0 + Mathf.Abs((Mathf.Sin(Time.time* 6) * 0.3f)), cameraTarget.localPosition.z);
+           // CurveFloat = cameraTarget.InverseTransformDirection( CurveFloat.x, CurveFloat.y, cameraTarget.localPosition.z);
+           //cameraTarget.localPosition = CurvePos;
+           
+          // cameraTarget.localPosition = new Vector3(CurvePos.x, CurvePos.y , 0);
+        }
+        else if( i < 100)
+        {
+            Timer = 0.3f;
+            mainCam.position = Vector3.Lerp(mainCam.position, cameraTarget.position, 5 * Time.deltaTime);
+            i++;
+        }
+        else if( cameraTarget.localPosition.x != 0)
+        {
+            cameraTarget.localPosition = Vector3.zero;
+        }
     }
    // public void Stamina()
    // {
@@ -186,7 +231,17 @@ public class CharacterMovement : MonoBehaviour
 
         return velocity.y;
     }
-
+    private Vector3 OffsetHeadBop()
+    {
+        Vector3 Offset = Vector3.zero;
+     
+           
+            CurvePos.x = Mathf.Sin(Timer * XMutlplySpeed) * XHeadBopAmplfied;
+            CurvePos.y = Mathf.Cos(Timer * YmutlplySpeed) * YHeadBopAmplfied;
+            Offset = cameraTarget.right * CurvePos.x + cameraTarget.up * CurvePos.y;
+      
+        return Offset;
+    }
     private void OnDrawGizmos()
     {
         if (groundCheck != null)

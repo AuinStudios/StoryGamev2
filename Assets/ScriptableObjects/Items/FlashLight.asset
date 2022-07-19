@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bed8115681684a4db7f399be5e99bfe, type: 3}
   m_Name: FlashLight
   m_EditorClassIdentifier: 
-  ItemName: 
+  ItemName: FlashLight
   IsActive: 1
-  ItemIcon: {fileID: 0}
-  damage: 5
-  CanAttack: 1
+  ItemIcon: {fileID: 21300000, guid: ef481acd2f659d448a42c7ced580e2dd, type: 3}
+  MaxDamage: 30
+  NormalDamage: 10
+  CanAttack: 0

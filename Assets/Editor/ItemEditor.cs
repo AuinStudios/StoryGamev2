@@ -27,7 +27,11 @@ public class ItemEditor : Editor
             itemsScriptableobject.MaxDamage = EditorGUILayout.IntSlider("MaxDamage", itemsScriptableobject.MaxDamage, 0, 30);
             itemsScriptableobject.NormalDamage = EditorGUILayout.IntSlider("Damage", itemsScriptableobject.NormalDamage, 0, itemsScriptableobject.MaxDamage);
         }
-
+        bool somethingChanged = EditorGUI.EndChangeCheck();
+        if (somethingChanged)
+        {
+            EditorUtility.SetDirty(itemsScriptableobject);
+        }
         serializedObject.ApplyModifiedProperties();
     }
     void GUILine()
