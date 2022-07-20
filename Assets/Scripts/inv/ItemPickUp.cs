@@ -25,7 +25,7 @@ public sealed class ItemPickUp : MonoBehaviour
 
     [Header("UiTexts")]
     [SerializeField]
-    private TextMeshProUGUI UiText;
+    private TextMeshProUGUI HoverPickUpText;
     //[Header("DestoryScript  And DestoryBoxcollider")]
     //[SerializeField]
     //private BoxCollider boxcollider;
@@ -60,7 +60,7 @@ public sealed class ItemPickUp : MonoBehaviour
         }
         else if (Vector3.Distance(transform.position, Player.position) <= 5 && IsDisableOrNot == false)
         {
-            UiText.text = Item.ItemName;
+            HoverPickUpText.text = Item.ItemName;
             IsDisableOrNot = true;
             StartCoroutine(OnHover());
         }

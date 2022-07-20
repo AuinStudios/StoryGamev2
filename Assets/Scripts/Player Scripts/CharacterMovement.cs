@@ -160,7 +160,7 @@ public class CharacterMovement : MonoBehaviour
             cansprint = SliderImage.fillAmount < 0.05f ? cansprint = false :cansprint = true;
             //HeadBop Values -------------------------------------------------
             XHeadBopAmplfied = 0.25f;
-            YHeadBopAmplfied = -0.3f;
+            YHeadBopAmplfied = -0.2f;
             XMutlplySpeed = 6;
             YmutlplySpeed = 12;
         }
@@ -172,7 +172,7 @@ public class CharacterMovement : MonoBehaviour
             cansprint = SliderImage.fillAmount > 0.15f ? cansprint = true : cansprint = false;    
             //HeadBop Values -------------------------------------------------
               XHeadBopAmplfied = 0.15f;
-              YHeadBopAmplfied = -0.2f;
+              YHeadBopAmplfied = -0.1f;
             XMutlplySpeed = 3;
             YmutlplySpeed = 6;
 

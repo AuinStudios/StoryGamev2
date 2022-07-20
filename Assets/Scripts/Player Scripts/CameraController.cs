@@ -11,7 +11,6 @@ public class CameraController : MonoBehaviour
     private float currentYRotation;
     private float currentXrotation;
     private Vector2 mousePosition = Vector2.zero;
-  //  private Vector2 Movement = Vector2.zero;
     [HideInInspector]
     public bool CanMoveCamera = true;
     // Start is called before the first frame update
@@ -28,20 +27,18 @@ public class CameraController : MonoBehaviour
         
         if (CanMoveCamera == true)
         {
-            mousePosition.x = Input.GetAxis("Mouse X") * settings.mouseSensitivity;
-            mousePosition.y = Input.GetAxis("Mouse Y") * settings.mouseSensitivity;
+            mousePosition.x = Input.GetAxis("Mouse X") * settings.mouseSensitivity * Time.deltaTime;
+            mousePosition.y = Input.GetAxis("Mouse Y") * settings.mouseSensitivity * Time.deltaTime;
 
             currentXrotation += mousePosition.x;
             currentYRotation += mousePosition.y;
         }
-        //Movement =new( Input.GetAxisRaw("Horizontal") , Input.GetAxisRaw("Vertical"));
-        //if(Movement.x != 0 || Movement.y != 0)
-        //{
-        //
-        //}
+     
+    }
 
-
-        currentYRotation = Mathf.Clamp(currentYRotation, -yRotationLimit, yRotationLimit);
+    private void LateUpdate()
+    {
+           currentYRotation = Mathf.Clamp(currentYRotation, -yRotationLimit, yRotationLimit);
         mousePosition.x = Mathf.Clamp(mousePosition.x, -ZRotationLimit, ZRotationLimit);
         Quaternion xQuaternion = Quaternion.Euler(0, currentXrotation, 0);
         Quaternion yQuaternion = Quaternion.Euler(-currentYRotation, 0,-mousePosition.x * 3);
