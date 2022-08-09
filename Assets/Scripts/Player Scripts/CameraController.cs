@@ -33,7 +33,6 @@ public class CameraController : MonoBehaviour
             currentXrotation += mousePosition.x;
             currentYRotation += mousePosition.y;
         }
-     
     }
 
     private void LateUpdate()
@@ -41,7 +40,7 @@ public class CameraController : MonoBehaviour
            currentYRotation = Mathf.Clamp(currentYRotation, -yRotationLimit, yRotationLimit);
         mousePosition.x = Mathf.Clamp(mousePosition.x, -ZRotationLimit, ZRotationLimit);
         Quaternion xQuaternion = Quaternion.Euler(0, currentXrotation, 0);
-        Quaternion yQuaternion = Quaternion.Euler(-currentYRotation, 0,-mousePosition.x * 3);
+        Quaternion yQuaternion = Quaternion.Euler(-currentYRotation, 0,-mousePosition.x * 3f);
        // Quaternion Tst = Input.GetAxis("Mouse X") == 0 || Input.GetAxis("Mouse Y") == 0 ?  Quaternion.Euler(0,0,-CameraDirRotate * 3): Quaternion.Euler(0, 0, 0);
         transform.localRotation = Quaternion.Slerp(transform.localRotation, xQuaternion * yQuaternion , Time.deltaTime * 20.0f);
     }

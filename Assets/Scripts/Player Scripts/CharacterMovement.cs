@@ -108,6 +108,7 @@ public class CharacterMovement : MonoBehaviour
     // private float MaxSpeed = 20;
     
     //private Vector2 mouseXZ = Vector2.zero;
+  
     private Vector2 direction = Vector2.zero;
     private Vector3 move = Vector3.zero;
 
@@ -125,8 +126,8 @@ public class CharacterMovement : MonoBehaviour
     [Header("Camera References")]
     [SerializeField]
     private  Transform mainCam = null;
-    [SerializeField]
-    private Transform cameraTarget = null;
+
+    public Transform cameraTarget = null;
     [SerializeField]
     private Transform ori;
     [Header("Stamina Ui")]
@@ -145,6 +146,8 @@ public class CharacterMovement : MonoBehaviour
     private Vector3 CameraHoldPos;
     private float Timer = 0.5f;
     float i = 0;
+    [Header("SmoothDampValues")]
+    private Vector3 SmoothV;
     // Update is called once per frame
     void Update()
     {
@@ -196,7 +199,7 @@ public class CharacterMovement : MonoBehaviour
             i = 0;
             Timer += Time.deltaTime;
             CameraHoldPos = cameraTarget.position + OffsetHeadBop();
-            mainCam.position = Vector3.Lerp(mainCam.position, CameraHoldPos, 5f * Time.deltaTime);
+            mainCam.position = Vector3.SmoothDamp(mainCam.position, CameraHoldPos, ref SmoothV, 5f * Time.deltaTime) ;
             cameraTarget.localRotation = mainCam.localRotation;
            // Vector3 newPosition = new Vector3(Mathf.Cos(Time.time * 3) * 0.3f,0 + Mathf.Abs((Mathf.Sin(Time.time* 6) * 0.3f)), cameraTarget.localPosition.z);
            // CurveFloat = cameraTarget.InverseTransformDirection( CurveFloat.x, CurveFloat.y, cameraTarget.localPosition.z);

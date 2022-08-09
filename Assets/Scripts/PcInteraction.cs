@@ -10,59 +10,68 @@ public sealed class PcInteraction : MonoBehaviour
 {
     [Header("Variables For ZoomIn Function")]
     [SerializeField]
-    private CameraController Camera;
+    private CameraController CameraEnable;
     [SerializeField]
-    private CharacterMovement HeadPosAndPlayer;
+    private CharacterMovement Player;
     [SerializeField]
-    private Transform TargetPos;
+    private Transform maincam;
+    [SerializeField]
+    private Transform CameraOrigin;
+    [SerializeField]
+    private Transform Target;
     private bool IsInPcOrNot = true;
     // Update is called once per frame
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && (Camera.transform.position - transform.position).magnitude < 3 && IsInPcOrNot)
+        if (Input.GetKeyDown(KeyCode.E) && (CameraEnable.transform.position - transform.position).magnitude < 3 && IsInPcOrNot)
         {
-            StartCoroutine(Zoominfunction(Camera.transform, TargetPos, false));
+            StartCoroutine(Zoominfunction(maincam, Target, false ));
+            
             IsInPcOrNot = false;
         }
-        else if ((Camera.transform.position - transform.position).magnitude < 3 && Input.GetKeyDown(KeyCode.Escape) && !IsInPcOrNot)
-        {
-            // the getchild is for the headpos
-           // StopCoroutine(Zoominfunction(Camera.transform, TargetPos, false));
-            StartCoroutine(Zoominfunction(Camera.transform, HeadPosAndPlayer.transform.GetChild(0).GetChild(0), true));
-            IsInPcOrNot = true;
-        }
     }
-    public IEnumerator Zoominfunction(Transform Current, Transform Target, bool OnOrOff)
+    private IEnumerator Zoominfunction(Transform Current, Transform target, bool OnOrOff)
     {
-        int i = 0;
+        bool i = false;
         float timelerp = 0;
+        CameraEnable.transform.position = Player.cameraTarget.position;
         if (OnOrOff == false)
         {
-            Camera.enabled = OnOrOff;
-            HeadPosAndPlayer.enabled = OnOrOff;
-            while (Current.position.magnitude <= Target.position.magnitude)
-            {
-                timelerp += 0.3f * Time.deltaTime;
-                Current.position = Vector3.Lerp(Current.position, Target.position, timelerp / 1f);
-                Current.rotation = Quaternion.Lerp(Current.rotation, Target.rotation, timelerp / 1f);
-                i++;
-                yield return new WaitForFixedUpdate();
-            }
+            CameraEnable.enabled = OnOrOff;
+            Player.enabled = OnOrOff;
         }
-        else
+        while (timelerp  < 0.3f)
         {
-            while (Current.position.magnitude >= Target.position.magnitude)
+            timelerp += 0.3f * Time.deltaTime;
+            Current.position = Vector3.Lerp(Current.position, target.position, timelerp / 1f);
+            Current.rotation = Quaternion.Lerp(Current.rotation, target.rotation, timelerp / 1f);
+            yield return new WaitForFixedUpdate();
+        }
+        
+        while (i == false)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                timelerp += 0.3f * Time.deltaTime;
-                Current.position = Vector3.Lerp(Current.position, Target.position, timelerp / 1f);
-                Current.rotation = Quaternion.Lerp(Current.rotation, Target.rotation, timelerp / 1f);
-                i++;
-                yield return new WaitForFixedUpdate();
+                StartCoroutine(Zoominfunction(maincam, CameraOrigin, true ));
+                IsInPcOrNot = true;
+                i = true;
             }
-            Camera.enabled = OnOrOff;
-            HeadPosAndPlayer.enabled = OnOrOff;
-        } 
-        Current.position = Target.position;
-        Current.rotation = Target.rotation;
+            else if(OnOrOff == true)
+            {
+                break;
+            }
+            yield return new WaitForFixedUpdate();
+        }
+        
+        
+        if (OnOrOff == true)
+        {
+            CameraEnable.enabled = OnOrOff;
+            Player.enabled = OnOrOff;
+        }
+
+        Current.position = target.position;
+        Current.rotation = target.rotation;
     }
 }

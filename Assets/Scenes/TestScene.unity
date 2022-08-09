@@ -14891,9 +14891,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4521e8d14d8c23442ab3dd6090190b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Camera: {fileID: 424030748}
-  HeadPosAndPlayer: {fileID: 1412614344}
-  TargetPos: {fileID: 2096053850}
+  CameraEnable: {fileID: 424030748}
+  Player: {fileID: 1412614344}
+  maincam: {fileID: 1687258585}
+  CameraOrigin: {fileID: 1963259809}
+  Target: {fileID: 2096053850}
 --- !u!4 &6722057926504932952
 Transform:
   m_ObjectHideFlags: 0
