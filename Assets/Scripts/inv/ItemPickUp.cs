@@ -37,8 +37,8 @@ public sealed class ItemPickUp : MonoBehaviour
     [HideInInspector]
     public bool IsDisableOrNot;
 
-    private Vector3 UiPickUpNormalSize = new Vector3(1, 1, 1);
-    private Vector3 UiPickUpHideSize = new Vector3(0, 0, 0);
+    private Vector3 UiPickUpNormalSize = Vector3.one;
+    private Vector3 UiPickUpHideSize = Vector3.zero;
     #region
     //private void OnMouseEnter()
     //{

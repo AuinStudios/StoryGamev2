@@ -7,6 +7,7 @@ using UnityEngine;
 /// <summary>
 ///     What does this DoorManager do?
 /// </summary>
+[System.Obsolete("Use DoorController.cs")]
 public sealed class DoorManager : MonoBehaviour
 {
     [SerializeField]
@@ -14,6 +15,7 @@ public sealed class DoorManager : MonoBehaviour
     [SerializeField]
     private Transform Player;
     public Transform test;
+
     private void Start()
     {
         Doors = new List<Door>();

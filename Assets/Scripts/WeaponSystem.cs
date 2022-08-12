@@ -56,7 +56,7 @@ public sealed class WeaponSystem : MonoBehaviour
     private void Update()
     {
         // cooldown ---------------------------------------------------------------------------------------
-        cooldown = cooldown > 0 ? cooldown -= Time.deltaTime : cooldown = 0;
+        cooldown = cooldown > 0 ? cooldown -= Time.deltaTime : cooldown = ConstValues.Float.zero;
         // recoil ---------------------------------------------------------------------------------------
 
         // weaponsystem ---------------------------------------------------------------------------------------

@@ -7,6 +7,7 @@ using UnityEngine;
 /// <summary>
 ///     What does this Door do?
 /// </summary>
+[System.Obsolete("Use DoorV2.cs")]
 public sealed class Door : MonoBehaviour
 {
     private enum DoorState
@@ -29,7 +30,8 @@ public sealed class Door : MonoBehaviour
     private Vector3 EndPos;
     private Vector3 StartPos;
     [Header("cooldownForOpeningDoor")]
-    private bool CanActiveOrNot = true;
+    private bool canActivate = true;
+
     private void Start()
     {
         // StartPos.localPosition = doorstate == DoorState.twoOpenedDoor ? : transform.localPosition;
@@ -52,14 +54,14 @@ public sealed class Door : MonoBehaviour
     }
     public void OpenDoor()
     {
-        if (CanActiveOrNot == true)
+        if (canActivate == true)
         {
-            StartCoroutine(IenumOpenDoor());
-            CanActiveOrNot = false;
+            StartCoroutine(OpenDoorCoroutine());
+            canActivate = false;
         }
 
     }
-    private IEnumerator IenumOpenDoor()
+    private IEnumerator OpenDoorCoroutine()
     {
         float TimeUntllDoor = 0.0f;
         float FixTimer = 0.0f;
@@ -97,7 +99,7 @@ public sealed class Door : MonoBehaviour
 
                         yield return new WaitForFixedUpdate();
                     }
-                    CanActiveOrNot = true;
+                    canActivate = true;
                 }
                 break;
             case DoorState.twoOpenedDoor:
@@ -153,7 +155,7 @@ public sealed class Door : MonoBehaviour
                         yield return new WaitForFixedUpdate();
                     }
                     // makes the door openable again
-                    CanActiveOrNot = true;
+                    canActivate = true;
                 }
                 break;
             case DoorState.ElevatorDoor:
