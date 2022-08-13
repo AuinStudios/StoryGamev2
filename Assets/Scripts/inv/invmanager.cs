@@ -46,20 +46,11 @@ public sealed class invmanager : MonoBehaviour
     [Header("RaycastToPickUpObject")]
     [SerializeField]
     private LayerMask mask;
-    // public List<bool> items;
+    [Header("Bools")]
+    private bool CanCloseinv;
     public void Start()
     {
-        // for (int i = 0; i < invui.GetChild(1).childCount; i++)
-        // {
-        //     slots[i](invui.GetChild(1).GetChild(i).GetChild(0).GetComponent<Image>());
-        // }
         invui.gameObject.SetActive(false);
-        // WeaponHolder.GetComponentInChildren<Sway>().enabled = false;
-        // array[i++] = value;
-        // for(int i = 0; i < WeaponHolder.childCount; i++)
-        // {
-        //     SwayWeapon.Add(WeaponHolder.GetChild(i)
-        // }
     }
 
 
@@ -132,67 +123,79 @@ public sealed class invmanager : MonoBehaviour
         #endregion
         // Open Inv --------------------------------------------------------
         #region OpenInv
-        if (Input.GetKeyDown(KeyCode.Q) && WeaponHolder.WeaponAnim.GetInteger("CanWeaponSwap") != 1)
+        if (Input.GetKeyDown(KeyCode.Q) && CanCloseinv == false  && WeaponHolder.WeaponAnim.GetInteger("CanWeaponSwap") != 1)
         {
-
-            if (invui.gameObject.activeSelf == true)
-            {
-
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-                MainCam.CanMoveCamera = true;
-                Player.enabled = true;
-                WeaponHolder.enabled = true;
-                StartCoroutine(OpeninvOrClose());
-                for (int i = 0; i < WeaponHolder.transform.childCount; i++)
-                {
-                    ItemHolderSway[i].CanSway = true;
-                }
-
-
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                MainCam.CanMoveCamera = false;
-                Player.enabled = false;
-                WeaponHolder.enabled = false;
-                for (int i = 0; i < WeaponHolder.transform.childCount; i++)
-                {
-                    ItemHolderSway[i].CanSway = false;
-                }
-                StartCoroutine(OpeninvOrClose());
-            }
-
+            OpeninvOrClose();
         }
     }
-    private IEnumerator OpeninvOrClose()
+    private void OpeninvOrClose()
     {
-        float timelerp = 0;
+       // float timelerp = 0;
         if (invui.gameObject.activeSelf == true)
         {
-            while (timelerp <= 0.3f)
-            {
-                timelerp += Time.deltaTime * 0.7f;
-                invui.position = Vector3.Lerp(invui.position, OpenAndCloseInvUi.GetChild(0).position, timelerp / 1);
-                yield return new WaitForFixedUpdate();
-            }
+            
+            LeanTween.cancel(invui.gameObject);
+            LeanTween.move(invui.gameObject, OpenAndCloseInvUi.GetChild(0).position, 100 * Time.deltaTime).setEaseOutBounce()
+                     .setOnStart(()=>
+                     {
+                         CanCloseinv = true;
+                     })
+                     .setOnComplete(() =>
+                     {
+                         CanCloseinv = false;
+                         invui.gameObject.SetActive(false);
+                     });
 
-            invui.gameObject.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+
+            Cursor.visible = false;
+
+            MainCam.CanMoveCamera = true;
+
+            Player.enabled = true;
+
+            WeaponHolder.enabled = true;
+
+            for (int i = 0; i < WeaponHolder.transform.childCount; i++)
+            {
+                ItemHolderSway[i].CanSway = true;
+            }
+            
         }
         else
         {
-            invui.gameObject.SetActive(true);
-            while (timelerp <= 0.3f)
+            LeanTween.move(invui.gameObject, OpenAndCloseInvUi.position, 100 * Time.deltaTime).setEaseOutBounce();
+
+            Cursor.lockState = CursorLockMode.None;
+
+            Cursor.visible = true;
+
+            MainCam.CanMoveCamera = false;
+
+            Player.enabled = false;
+
+            WeaponHolder.enabled = false;
+            for (int i = 0; i < WeaponHolder.transform.childCount; i++)
             {
-                timelerp += Time.deltaTime * 0.7f;
-                invui.position = Vector3.Lerp(invui.position, OpenAndCloseInvUi.position, timelerp / 1);
-                yield return new WaitForFixedUpdate();
+                ItemHolderSway[i].CanSway = false;
             }
+
+            invui.gameObject.SetActive(true);
         }
     }
-
+    //private void Openinv()
+    //{
+    //    Debug.Log("a");
+    //        LeanTween.move(invui.gameObject, OpenAndCloseInvUi.GetChild(0).position, 100 * Time.deltaTime).setEaseOutBounce()
+    //                 .setOnComplete(() =>
+    //                 {
+    //                  invui.gameObject.SetActive(false);
+    //                 });
+    //}
+    //private void Closeinv()
+    //{
+    //    LeanTween.move(invui.gameObject, OpenAndCloseInvUi.position, 100 * Time.deltaTime).setEaseOutBounce();
+    //}
     #endregion
     #region DragUi
     public void DragUi()

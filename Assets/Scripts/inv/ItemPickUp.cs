@@ -18,27 +18,17 @@ public sealed class ItemPickUp : MonoBehaviour
     private Transform UiPopUpHover;
     [SerializeField]
     private Transform Player;
-    // [SerializeField]
-    // private Transform ItemPrefab;
     [SerializeField]
     private WeaponSystem WeaponHolder;
 
     [Header("UiTexts")]
     [SerializeField]
     private TextMeshProUGUI HoverPickUpText;
-    //[Header("DestoryScript  And DestoryBoxcollider")]
-    //[SerializeField]
-    //private BoxCollider boxcollider;
-    //[SerializeField]
-    //private ItemPickUp DisableScript;
-    //[SerializeField]
-    // private Sway SwayActive;
-    private float LerpTime = 0;
     [HideInInspector]
     public bool IsDisableOrNot;
 
-    private Vector3 UiPickUpNormalSize = Vector3.one;
-    private Vector3 UiPickUpHideSize = Vector3.zero;
+   // private Vector3 UiPickUpNormalSize = Vector3.one;
+   // private Vector3 UiPickUpHideSize = Vector3.zero;
     #region
     //private void OnMouseEnter()
     //{
@@ -56,13 +46,13 @@ public sealed class ItemPickUp : MonoBehaviour
         if (Vector3.Distance(transform.position, Player.position) >= 5 && IsDisableOrNot == true)
         {
             IsDisableOrNot = false;
-            StartCoroutine(OffHover());
+            OffHover();
         }
         else if (Vector3.Distance(transform.position, Player.position) <= 5 && IsDisableOrNot == false)
         {
             HoverPickUpText.text = Item.ItemName;
             IsDisableOrNot = true;
-            StartCoroutine(OnHover());
+            OnHover();
         }
         else if (Input.GetKeyDown(KeyCode.E) && Vector3.Distance(transform.position, Player.position) <= 5)
         {
@@ -143,7 +133,7 @@ public sealed class ItemPickUp : MonoBehaviour
         // Destroy(boxcollider);
         // Destroy(DisableScript);
 
-        UiPopUpHover.localScale = UiPickUpHideSize;
+        UiPopUpHover.localScale = Vector3.zero;
         for (int i = 0; i < inv.slots.Length; i++)
         {
             if (inv.slots[i].enabled == false)
@@ -163,37 +153,39 @@ public sealed class ItemPickUp : MonoBehaviour
     public void mousexit()
     {
         IsDisableOrNot = false;
-        StartCoroutine(OffHover());
+        OffHover();
     }
 
-    private IEnumerator OffHover()
+    private void OffHover()
     {
-        LerpTime = 0;
-        while (LerpTime < 0.3f)
-        {
-            LerpTime += 0.6f * Time.deltaTime;
-            UiPopUpHover.localScale = Vector3.Lerp(UiPopUpHover.localScale, UiPickUpHideSize, LerpTime / 1);
-            if (IsDisableOrNot == true)
-            {
-                break;
-            }
-            yield return new WaitForFixedUpdate();
-        }
+        LeanTween.scale(UiPopUpHover.gameObject, Vector3.zero, 60.0f * Time.deltaTime).setEaseOutBounce();
+        //LerpTime = 0;
+        //while (LerpTime < 0.3f)
+        //{
+        //    LerpTime += 0.6f * Time.deltaTime;
+        //    UiPopUpHover.localScale = Vector3.Lerp(UiPopUpHover.localScale, UiPickUpHideSize, LerpTime / 1);
+        //    if (IsDisableOrNot == true)
+        //    {
+        //        break;
+        //    }
+        //    yield return new WaitForFixedUpdate();
+        //}
 
     }
-    private IEnumerator OnHover()
+    private void OnHover()
     {
-        LerpTime = 0;
-        while (LerpTime < 0.3f)
-        {
-            LerpTime += 0.6f * Time.deltaTime;
-            UiPopUpHover.localScale = Vector3.Lerp(UiPopUpHover.localScale, UiPickUpNormalSize, LerpTime / 1);
-            if (IsDisableOrNot == false)
-            {
-                break;
-            }
-            yield return new WaitForFixedUpdate();
-        }
+        LeanTween.scale(UiPopUpHover.gameObject, Vector3.one, 60.0f * Time.deltaTime).setEaseOutBounce();
+        //LerpTime = 0;
+        //while (LerpTime < 0.3f)
+        //{
+        //    LerpTime += 0.6f * Time.deltaTime;
+        //    UiPopUpHover.localScale = Vector3.Lerp(UiPopUpHover.localScale, UiPickUpNormalSize, LerpTime / 1);
+        //    if (IsDisableOrNot == false)
+        //    {
+        //        break;
+        //    }
+        //    yield return new WaitForFixedUpdate();
+        //}
 
     }
 }

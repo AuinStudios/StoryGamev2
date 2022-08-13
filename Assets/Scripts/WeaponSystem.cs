@@ -136,7 +136,7 @@ public sealed class WeaponSystem : MonoBehaviour
         for(int b = 0; b < WeaponCollider.Length; b++)
         {
             // gets the item holder  and checks if its active or not
-            if (WeaponCollider[b].gameObject.transform.parent.parent.parent.parent.gameObject.activeSelf == true )
+            if (WeaponCollider[b].gameObject.transform.root.gameObject.activeSelf == true )
             {
                 CurrentCollider = WeaponCollider[b];
                 break;

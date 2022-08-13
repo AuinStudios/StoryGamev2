@@ -102,13 +102,6 @@ public sealed class DoorV2 : MonoBehaviour
                          DoorController.Instance.CanOpenDoor = true;
 
                      });
-                    // .setOnComplete(() =>
-                    // {
-                    //   
-                    //     
-                    //
-                    //     //Debug.LogFormat("Opened door {0}", doorProperty.door.name);
-                    // });
         }
 
         onComplete?.Invoke();
