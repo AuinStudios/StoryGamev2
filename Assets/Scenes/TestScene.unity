@@ -7702,13 +7702,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doorProperties:
   - door: {fileID: 22781305}
-    direction: 0
+    direction: 2
     amount: 3
     time: 100
+    ogpos: {x: 0, y: 0, z: 0}
+    Endpos: {x: 0, y: 0, z: 0}
   - door: {fileID: 367515605}
-    direction: 0
+    direction: 3
     amount: 3
     time: 100
+    ogpos: {x: 0, y: 0, z: 0}
+    Endpos: {x: 0, y: 0, z: 0}
   interactHoverTransform: {fileID: 4669982563535094594}
   interactDialog: {fileID: 4669982563764232322}
 --- !u!114 &1961355537
@@ -7738,7 +7742,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.2775483, y: 2.5059102, z: 5.0061216}
+  m_Size: {x: 3.2775483, y: 2.5059102, z: 5}
   m_Center: {x: -0.10339237, y: -0.25977603, z: -0.0000000025391196}
 --- !u!1 &1963259808
 GameObject:
@@ -8281,6 +8285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tag: Player
+  CanOpenDoor: 0
 --- !u!1 &2138677391
 GameObject:
   m_ObjectHideFlags: 0
