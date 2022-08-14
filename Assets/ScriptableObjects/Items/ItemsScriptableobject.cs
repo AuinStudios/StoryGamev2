@@ -15,5 +15,10 @@ public class ItemsScriptableobject : ScriptableObject
 
     public int NormalDamage = 10;
 
+    public int KeycardLevel = 1;
+
     public bool CanAttack = true;
+
+    public bool IsKeycard = false;
+
 }

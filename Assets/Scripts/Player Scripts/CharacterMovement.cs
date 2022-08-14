@@ -96,7 +96,21 @@ public class CharacterMovement : MonoBehaviour
     //        gravity.y = 0;
     //    }
     //}
-
+    #region Singleton
+    public static CharacterMovement Instance { get; private set; }
+    private void Awake()
+    {
+        // If there is an instance, and it's not me, delete myself.
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+    #endregion
     [Header("Player Controller")]
     [SerializeField]
     private CharacterController player = null;
@@ -137,8 +151,9 @@ public class CharacterMovement : MonoBehaviour
     private bool cansprint = true;
 
     private Quaternion OriQuaternion;
-
-
+    [Header("LevelClearance")]
+    [HideInInspector]
+    public int LevelClearance = 0;
     [Header("Animation Curves for HeadBop")]
     private float XHeadBopAmplfied , YHeadBopAmplfied;
     private float XMutlplySpeed, YmutlplySpeed;

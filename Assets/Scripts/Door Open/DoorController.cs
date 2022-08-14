@@ -31,7 +31,7 @@ public sealed class DoorController : MonoBehaviour
     [SerializeField]
     private new string tag;
     public string GetTag { get { return tag; } }
-    [HideInInspector]
+    
     public bool CanOpenDoor = false;
 	// Update is called once per frame
 	private void Update()

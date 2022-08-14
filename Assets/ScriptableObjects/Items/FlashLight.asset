@@ -17,4 +17,6 @@ MonoBehaviour:
   ItemIcon: {fileID: 21300000, guid: ef481acd2f659d448a42c7ced580e2dd, type: 3}
   MaxDamage: 30
   NormalDamage: 10
+  KeycardLevel: 1
   CanAttack: 0
+  IsKeycard: 0

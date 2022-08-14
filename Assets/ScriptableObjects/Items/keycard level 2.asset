@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bed8115681684a4db7f399be5e99bfe, type: 3}
-  m_Name: Pipe
+  m_Name: keycard level 2
   m_EditorClassIdentifier: 
-  ItemName: Pipe
+  ItemName: Keycard L2
   IsActive: 1
   ItemIcon: {fileID: 0}
   MaxDamage: 30
   NormalDamage: 10
-  KeycardLevel: 1
-  CanAttack: 1
-  IsKeycard: 0
+  KeycardLevel: 2
+  CanAttack: 0
+  IsKeycard: 1

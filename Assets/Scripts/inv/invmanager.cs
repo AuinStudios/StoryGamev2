@@ -22,8 +22,8 @@ public sealed class invmanager : MonoBehaviour
     private WeaponSystem WeaponHolder;
     private ItemsScriptableobject tempobj;
     [Header("Player Stop Cam And Movement ")]
-    [SerializeField]
-    private CharacterMovement Player;
+    //[SerializeField]
+    //private CharacterMovement Player;
     [SerializeField]
     private CameraController MainCam;
     [Header("TempSlot For Ui")]
@@ -152,7 +152,7 @@ public sealed class invmanager : MonoBehaviour
 
             MainCam.CanMoveCamera = true;
 
-            Player.enabled = true;
+            CharacterMovement.Instance.enabled = true;
 
             WeaponHolder.enabled = true;
 
@@ -172,7 +172,7 @@ public sealed class invmanager : MonoBehaviour
 
             MainCam.CanMoveCamera = false;
 
-            Player.enabled = false;
+            CharacterMovement.Instance.enabled = false;
 
             WeaponHolder.enabled = false;
             for (int i = 0; i < WeaponHolder.transform.childCount; i++)

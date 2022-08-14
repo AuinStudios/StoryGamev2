@@ -34,12 +34,14 @@ public sealed class DoorV2 : MonoBehaviour
     }
     [SerializeField]
     private DoorProperties[] doorProperties;
-
+    [SerializeField]
+    private int LevelDoorClearance = 0;
     [Space(5.0f)]
     [SerializeField]
     private Transform interactHoverTransform;
     [SerializeField]
     private TextMeshProUGUI interactDialog;
+    private LTDescr Timepassed;
     private void Start()
     {
         foreach(DoorProperties door in doorProperties)
@@ -50,7 +52,7 @@ public sealed class DoorV2 : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(DoorController.Instance.GetTag))
+        if (other.CompareTag(DoorController.Instance.GetTag) && CharacterMovement.Instance.LevelClearance >= LevelDoorClearance)
         {
             DoorController.Instance.InteractDoor += OpenDoor;
             DoorController.Instance.InteractDoor -= CloseDoor;
@@ -61,7 +63,6 @@ public sealed class DoorV2 : MonoBehaviour
             }
             else
             {
-                LeanTween.cancelAll();
                 DoorController.Instance.invoketheevent();
             }
                  
@@ -91,13 +92,15 @@ public sealed class DoorV2 : MonoBehaviour
     private void OpenAlldoors(System.Action onComplete)
     {
         //Debug.Log("Opening all doors");
-
+        Timepassed = null;
         foreach (DoorProperties doorProperty in doorProperties)
         {
-            LeanTween.moveLocal(doorProperty.door, doorProperty.Endpos, doorProperty.time * Time.deltaTime)
+            LeanTween.cancel(doorProperty.door);
+          LTDescr animation =  LeanTween.moveLocal(doorProperty.door, doorProperty.Endpos, doorProperty.time * Time.deltaTime)
                      .setEaseOutSine()
                      .setOnStart(() =>
                      {
+                        
                          HideInteractDialog();
                          DoorController.Instance.CanOpenDoor = true;
 
@@ -109,7 +112,7 @@ public sealed class DoorV2 : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag(DoorController.Instance.GetTag))
+        if (other.CompareTag(DoorController.Instance.GetTag) && CharacterMovement.Instance.LevelClearance >= LevelDoorClearance)
         {
             HideInteractDialog();
            
@@ -118,8 +121,7 @@ public sealed class DoorV2 : MonoBehaviour
             
             if(DoorController.Instance.CanOpenDoor == true)
             {
-                LeanTween.cancelAll();
-             DoorController.Instance.invoketheevent();
+                DoorController.Instance.invoketheevent();
             }
             
         }
@@ -148,32 +150,28 @@ public sealed class DoorV2 : MonoBehaviour
 
         foreach (DoorProperties doorProperty in doorProperties)
         {
-          
-          LTDescr animation =  LeanTween.moveLocal(doorProperty.door, doorProperty.ogpos, doorProperty.time * Time.deltaTime)
-                     .setEaseOutSine()
-                     .setOnComplete(() =>
-                     {
-                         ShowInteractDialog();
-                         
-                         //Debug.LogFormat("Closed door {0}", doorProperty.door.name);
-                     });
+
+            LeanTween.cancel(doorProperty.door);
+            Timepassed = LeanTween.moveLocal(doorProperty.door, doorProperty.ogpos, doorProperty.time * Time.deltaTime)
+                       .setEaseOutSine();
             
-            StartCoroutine(makedoornotopenwhenclose(animation));
+
+            StartCoroutine(makedoornotopenwhenclose());
+            
         }
         onComplete?.Invoke();
     }
-    private IEnumerator makedoornotopenwhenclose(LTDescr anim)
+    private IEnumerator makedoornotopenwhenclose()
     {
-        int i = 0;
-        while( i < 101)
+       
+        while(DoorController.Instance.CanOpenDoor == true && Timepassed != null )
         {
-          float remaintime = anim.time - anim.passed;
-            if(remaintime < 0.8f)
+          float remaintime = Timepassed.time - Timepassed.passed;
+            if(remaintime < 0.8f )
             {
-             DoorController.Instance.CanOpenDoor = false; 
-                
+             DoorController.Instance.CanOpenDoor = false;
+                Debug.Log("Close");
             }
-            i++;
             yield return new WaitForFixedUpdate();
         }
     }
