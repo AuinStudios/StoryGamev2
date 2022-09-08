@@ -9,6 +9,7 @@ using UnityEngine;
 /// </summary>
 public sealed class PcObject : MonoBehaviour
 {
+    [Header("Camera And Positon propertys")]
     [SerializeField]
     private Transform CameraPostion;
     [SerializeField]
@@ -36,22 +37,41 @@ public sealed class PcObject : MonoBehaviour
     }
     private void enterthing()
     {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+
         CharacterMovement.Instance.enabled = false;
         cam.enabled = false;
         LeanTween.move(GetHead, CameraPostion.position, 60.0f * Time.deltaTime).setOnComplete(()=> 
         {
             Pcmanager.Instance.CanClick = true;
         });
-        LeanTween.rotateLocal(GetHead, new Vector3(-20, 0, 0) , 60.0f * Time.deltaTime);
+        StartCoroutine(enterthingrotation());
     }
+    private IEnumerator enterthingrotation()
+    {
+        int i = 0;
+        while(i < 60)
+        {
+            GetHead.transform.rotation = Quaternion.Lerp(GetHead.transform.rotation, CameraPostion.rotation, 10.0f * Time.deltaTime);
+            i++;
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
     private void ExitThing()
     {
+
         LeanTween.moveLocal(GetHead,Vector3.zero, 30.0f * Time.deltaTime).setEaseOutSine().setOnComplete(() =>
         {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
             Pcmanager.Instance.CanClick = false;
             CharacterMovement.Instance.enabled = true;
             cam.enabled = true;
         }); ;
+        LeanTween.rotateLocal(GetHead, Vector3.zero, 30.0f * Time.deltaTime);
     }
 
 }
