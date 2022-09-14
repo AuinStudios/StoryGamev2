@@ -9,6 +9,9 @@ using UnityEngine;
 /// </summary>
 public sealed class PcObject : MonoBehaviour
 {
+    //[Header("Grid propertys")]
+    //[SerializeField]
+    //private Grid gridstuff;
     [Header("Camera And Positon propertys")]
     [SerializeField]
     private Transform CameraPostion;
@@ -22,6 +25,7 @@ public sealed class PcObject : MonoBehaviour
         {
             Pcmanager.Instance.InteractPc += enterthing;
             Pcmanager.Instance.InteractPc -= ExitThing;
+
             Pcmanager.Instance.CanOpenPc = true;
         }
     }
@@ -74,4 +78,5 @@ public sealed class PcObject : MonoBehaviour
         LeanTween.rotateLocal(GetHead, Vector3.zero, 30.0f * Time.deltaTime);
     }
 
+    
 }
