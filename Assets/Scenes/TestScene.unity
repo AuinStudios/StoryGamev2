@@ -1010,144 +1010,6 @@ Transform:
   m_Father: {fileID: 1960815617}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &333918134
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1927087639}
-    m_Modifications:
-    - target: {fileID: 1170674519736302264, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: m_Name
-      value: inv manager
-      objectReference: {fileID: 0}
-    - target: {fileID: 1170674519736302266, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1170674519736302266, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -25.421303
-      objectReference: {fileID: 0}
-    - target: {fileID: 1170674519736302266, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.0754342
-      objectReference: {fileID: 0}
-    - target: {fileID: 1170674519736302266, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -58.14882
-      objectReference: {fileID: 0}
-    - target: {fileID: 1170674519736302266, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1170674519736302266, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1170674519736302266, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1170674519736302266, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1170674519736302266, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1170674519736302266, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1170674519736302266, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: invui
-      value: 
-      objectReference: {fileID: 4669982564031235846}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: Player
-      value: 
-      objectReference: {fileID: 1412614344}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: MainCam
-      value: 
-      objectReference: {fileID: 424030748}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: m_Raycaster
-      value: 
-      objectReference: {fileID: 4669982563649810044}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: WeaponHolder
-      value: 
-      objectReference: {fileID: 279889128}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: m_EventSystem
-      value: 
-      objectReference: {fileID: 1909386196}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: OpenAndCloseInvUi
-      value: 
-      objectReference: {fileID: 4669982563644899091}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: slots.Array.data[0]
-      value: 
-      objectReference: {fileID: 4669982563050571253}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: slots.Array.data[1]
-      value: 
-      objectReference: {fileID: 4669982563974977701}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: slots.Array.data[2]
-      value: 
-      objectReference: {fileID: 4669982564093292981}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: slots.Array.data[3]
-      value: 
-      objectReference: {fileID: 4669982563038627320}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: ItemHolderSway.Array.data[0]
-      value: 
-      objectReference: {fileID: 1982366093}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: ItemHolderSway.Array.data[1]
-      value: 
-      objectReference: {fileID: 1340460174}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: ItemHolderSway.Array.data[2]
-      value: 
-      objectReference: {fileID: 1109280379}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: ItemHolderSway.Array.data[3]
-      value: 
-      objectReference: {fileID: 760897088}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: ItemHolderAnimator.Array.data[0]
-      value: 
-      objectReference: {fileID: 1982366094}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: ItemHolderAnimator.Array.data[1]
-      value: 
-      objectReference: {fileID: 1340460175}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: ItemHolderAnimator.Array.data[2]
-      value: 
-      objectReference: {fileID: 1109280380}
-    - target: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-      propertyPath: ItemHolderAnimator.Array.data[3]
-      value: 
-      objectReference: {fileID: 760897087}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
---- !u!4 &333918135 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1170674519736302266, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-  m_PrefabInstance: {fileID: 333918134}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &341976028
 GameObject:
   m_ObjectHideFlags: 0
@@ -4695,7 +4557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Item: {fileID: 11400000, guid: abdb8fb836d8b1b438f8422eeb9c45b3, type: 2}
-  inv: {fileID: 1138231481}
+  inv: {fileID: 1170674519520351501}
   UiPopUpHover: {fileID: 4669982563535094594}
   WeaponHolder: {fileID: 279889128}
   HoverPickUpText: {fileID: 4669982563764232322}
@@ -4800,17 +4662,6 @@ Transform:
   m_Father: {fileID: 1643347672}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1138231481 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1170674519736302267, guid: 80fa361765ea8bf43934841165c01f7f, type: 3}
-  m_PrefabInstance: {fileID: 333918134}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c5bf7004527ce941a0e759b7d130e89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1169231829
 GameObject:
   m_ObjectHideFlags: 0
@@ -6029,7 +5880,7 @@ PrefabInstance:
     - target: {fileID: 3229827569515404504, guid: c057203f2f1779c4d940fb6ae54b12c5, type: 3}
       propertyPath: inv
       value: 
-      objectReference: {fileID: 1138231481}
+      objectReference: {fileID: 1170674519520351501}
     - target: {fileID: 3229827569515404504, guid: c057203f2f1779c4d940fb6ae54b12c5, type: 3}
       propertyPath: Player
       value: 
@@ -6178,7 +6029,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Item: {fileID: 11400000, guid: 25f87a3c6bcb31c4cabe0c4a2f766e4d, type: 2}
-  inv: {fileID: 1138231481}
+  inv: {fileID: 1170674519520351501}
   UiPopUpHover: {fileID: 4669982563535094594}
   WeaponHolder: {fileID: 279889128}
   HoverPickUpText: {fileID: 4669982563764232322}
@@ -6259,7 +6110,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1491304435
 GameObject:
@@ -8325,7 +8176,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 333918135}
+  - {fileID: 1170674519520351500}
   - {fileID: 2126550015}
   - {fileID: 1169231830}
   m_Father: {fileID: 0}
@@ -9969,6 +9820,76 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &1170674519520351500
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170674519520351502}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -25.421303, y: 1.0754342, z: -58.14882}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1927087639}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1170674519520351501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170674519520351502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c5bf7004527ce941a0e759b7d130e89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Raycaster: {fileID: 4669982563649810044}
+  m_EventSystem: {fileID: 1909386196}
+  invui: {fileID: 4669982564031235846}
+  OpenAndCloseInvUi: {fileID: 4669982563644899091}
+  WeaponHolder: {fileID: 279889128}
+  MainCam: {fileID: 424030748}
+  slots:
+  - {fileID: 4669982563050571253}
+  - {fileID: 4669982563974977701}
+  - {fileID: 4669982564093292981}
+  - {fileID: 4669982563038627320}
+  ItemHolderSway:
+  - {fileID: 1982366093}
+  - {fileID: 1340460174}
+  - {fileID: 1109280379}
+  - {fileID: 760897088}
+  ItemHolderAnimator:
+  - {fileID: 1982366094}
+  - {fileID: 1340460175}
+  - {fileID: 1109280380}
+  - {fileID: 760897087}
+  getpickupscriptonce: 1
+  pickup: {fileID: 0}
+  mask:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!1 &1170674519520351502
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1170674519520351500}
+  - component: {fileID: 1170674519520351501}
+  m_Layer: 0
+  m_Name: inv manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1172351455260431258
 GameObject:
   m_ObjectHideFlags: 0
@@ -10185,7 +10106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Item: {fileID: 11400000, guid: abdb8fb836d8b1b438f8422eeb9c45b3, type: 2}
-  inv: {fileID: 1138231481}
+  inv: {fileID: 1170674519520351501}
   UiPopUpHover: {fileID: 4669982563535094594}
   WeaponHolder: {fileID: 279889128}
   HoverPickUpText: {fileID: 4669982563764232322}
@@ -12707,7 +12628,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1138231481}
+        - m_Target: {fileID: 1170674519520351501}
           m_TargetAssemblyTypeName: invmanager, Assembly-CSharp
           m_MethodName: EndDragUi
           m_Mode: 1
@@ -12723,7 +12644,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1138231481}
+        - m_Target: {fileID: 1170674519520351501}
           m_TargetAssemblyTypeName: invmanager, Assembly-CSharp
           m_MethodName: DragUi
           m_Mode: 1
@@ -12760,7 +12681,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1138231481}
+        - m_Target: {fileID: 1170674519520351501}
           m_TargetAssemblyTypeName: invmanager, Assembly-CSharp
           m_MethodName: EndDragUi
           m_Mode: 1
@@ -12776,7 +12697,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1138231481}
+        - m_Target: {fileID: 1170674519520351501}
           m_TargetAssemblyTypeName: invmanager, Assembly-CSharp
           m_MethodName: DragUi
           m_Mode: 1
@@ -13148,7 +13069,7 @@ RectTransform:
   - {fileID: 1023339531}
   - {fileID: 1524823975}
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -13444,7 +13365,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1138231481}
+        - m_Target: {fileID: 1170674519520351501}
           m_TargetAssemblyTypeName: invmanager, Assembly-CSharp
           m_MethodName: EndDragUi
           m_Mode: 1
@@ -13460,7 +13381,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1138231481}
+        - m_Target: {fileID: 1170674519520351501}
           m_TargetAssemblyTypeName: invmanager, Assembly-CSharp
           m_MethodName: DragUi
           m_Mode: 1
@@ -13764,7 +13685,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1138231481}
+        - m_Target: {fileID: 1170674519520351501}
           m_TargetAssemblyTypeName: invmanager, Assembly-CSharp
           m_MethodName: EndDragUi
           m_Mode: 1
@@ -13780,7 +13701,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1138231481}
+        - m_Target: {fileID: 1170674519520351501}
           m_TargetAssemblyTypeName: invmanager, Assembly-CSharp
           m_MethodName: DragUi
           m_Mode: 1
@@ -14374,7 +14295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Item: {fileID: 11400000, guid: 8eaffb704bdc07646a93e5634b78c51c, type: 2}
-  inv: {fileID: 1138231481}
+  inv: {fileID: 1170674519520351501}
   UiPopUpHover: {fileID: 4669982563535094594}
   WeaponHolder: {fileID: 279889128}
   HoverPickUpText: {fileID: 4669982563764232322}
@@ -16750,7 +16671,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Item: {fileID: 11400000, guid: 32764660d1d121b4185a8c67b48f53ad, type: 2}
-  inv: {fileID: 1138231481}
+  inv: {fileID: 1170674519520351501}
   UiPopUpHover: {fileID: 4669982563535094594}
   WeaponHolder: {fileID: 279889128}
   HoverPickUpText: {fileID: 4669982563764232322}

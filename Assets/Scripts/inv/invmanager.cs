@@ -296,7 +296,7 @@ public sealed class invmanager : MonoBehaviour
                 invui.GetChild(1).GetChild(result.gameObject.transform.GetSiblingIndex()).GetChild(0).transform.position = HoldTempSlot.transform.parent.position;
                 invui.GetChild(1).GetChild(result.gameObject.transform.GetSiblingIndex()).GetChild(0).SetParent(HoldTempSlot.transform.parent);
                 HoldTempSlot.transform.SetParent(invui.GetChild(1).GetChild(result.gameObject.transform.GetSiblingIndex()));
-
+                
 
             }
             else

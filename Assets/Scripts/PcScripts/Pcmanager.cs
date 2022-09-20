@@ -68,33 +68,6 @@ public sealed class Pcmanager : MonoBehaviour
     {
         InteractPc.Invoke();
     }
-    // private void getXZ(Vector3 worldpos, out int x, out int y)//, out bool work)
-    // {
-    //     //bool walkable = !(Physics.CheckSphere(worldpos, cellsize, mask));
-    //     x = Mathf.FloorToInt(worldpos.x / cellsize);
-    //     //z = Mathf.FloorToInt(worldpos.z / cellsize);
-    //     y = Mathf.FloorToInt(worldpos.y / cellsize);
-    //     Debug.Log(getworldpositon(x, y));
-    //     if (Physics.BoxCast(temphold.position + new Vector3(0, 0, 0.3f), new Vector3(cellsize, cellsize, cellsize) / 2, temphold.forward, out RaycastHit raycas, Quaternion.identity, 999f, mask))
-    //     {
-    //         // Debug.Log("a");
-    //         // Debug.Log(raycas.transform.gameObject.name);
-    //         if (temphold == raycas.transform)
-    //         {
-    //             raycas = new RaycastHit();
-    //             //  -0.8382121f / cellsize
-    //         }
-    //        
-    //         raycas.transform.position = y < 18 ? getworldpositon(x + 1, y + 7) : getworldpositon(x, y - 1); ;
-    //         
-    //         raycas.transform.localPosition = clamp(raycas.transform.localPosition);
-    //         raycas.transform.localPosition = new Vector3(raycas.transform.localPosition.x, raycas.transform.localPosition.y, 0.0f);
-    //     }
-    // }
-    private Vector3 getworldpositon(int x, int y)
-    {
-        return new Vector3(x - GridOffset.x, y - GridOffset.y) * cellsize;
-    }
     private Vector3 getmousepos()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -132,23 +105,19 @@ public sealed class Pcmanager : MonoBehaviour
             raycas.transform.localPosition = clamp(raycas.transform.localPosition);
             raycas.transform.localPosition = new Vector3(raycas.transform.localPosition.x, raycas.transform.localPosition.y, 0.0f);
             raycas.collider.enabled = false;
-            bool test = false;
-            while (test == false)
+            bool isslottaken = false;
+            while (isslottaken == false)
             {
-              
-                
-                if (Physics.Raycast(getotherapplication.position + new Vector3(0, 0, 0.3f), getotherapplication.forward, out RaycastHit raycs, 999f, mask))
+                if (Physics.Raycast(getotherapplication.position + new Vector3(0, 0, 0.3f), getotherapplication.forward, 999f, mask))
                 {
-                    Debug.Log("a");
                     getotherapplication.transform.position = translatetocell(getotherapplication.position + new Vector3(ConstValues.Float.zero, -0.06f, ConstValues.Float.zero));
                     getotherapplication.localPosition = new Vector3(getotherapplication.localPosition.x, getotherapplication.localPosition.y, ConstValues.Float.zero);
                     
                 }
                 else
                 {
-                    Debug.Log("B");
                     raycas.collider.enabled = true;
-                    test = true;
+                    isslottaken = true;
                 }
                 //yield return new WaitForSeconds(0.1f);
                 yield return new WaitForFixedUpdate();
@@ -201,15 +170,4 @@ public sealed class Pcmanager : MonoBehaviour
         mousepos.z = mZCoord;
         return Camera.main.ScreenToWorldPoint(mousepos);
     }
-
-    // private void OnDrawGizmos()
-    // {
-    //     Gizmos.DrawRay(temphold.position, temphold.forward);
-    //     Gizmos.DrawWireCube(temphold.position + temphold.forward, new Vector3(cellsize, cellsize, cellsize) / 2);
-    // }
-
-
-
-
-
 }
