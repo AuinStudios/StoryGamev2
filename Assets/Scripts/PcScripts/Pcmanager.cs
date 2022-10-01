@@ -44,7 +44,6 @@ public sealed class Pcmanager : MonoBehaviour
         else if (CanClick == true && Input.GetKeyDown(KeyCode.Mouse0))
         {
             InvokePc();
-
         }
     }
 }

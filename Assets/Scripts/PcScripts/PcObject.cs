@@ -37,6 +37,9 @@ public sealed class PcObject : MonoBehaviour
     private CameraController cam;
     [Header("fix a bug from being in the same xgrid")]
     private int fixgridx = 0;
+    [Header("bools")]
+    private bool canexitorenter;
+    private bool stoprotation;
     private void Start()
     {
         gridarray = new GameObject[width, height];
@@ -56,7 +59,6 @@ public sealed class PcObject : MonoBehaviour
         {
             Pcmanager.Instance.InteractPc += enterthing;
             Pcmanager.Instance.InteractPc -= ExitThing;
-
             Pcmanager.Instance.CanOpenPc = true;
         }
     }
@@ -65,7 +67,7 @@ public sealed class PcObject : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Pcmanager.Instance.InteractPc -= enterthing;
-            Pcmanager.Instance.InteractPc += ExitThing;
+            
             Pcmanager.Instance.CanOpenPc = false;
 
         }
@@ -73,61 +75,81 @@ public sealed class PcObject : MonoBehaviour
 
     private void enterthing()
     {
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        Pcmanager.Instance.InteractPc += getmousepos;
-
-        CharacterMovement.Instance.enabled = false;
-        cam.enabled = false;
-        LeanTween.alphaCanvas(staminaandhealth, 0, 60.0f * Time.deltaTime);
-        LeanTween.move(GetHead, CameraPostion.position, 60.0f * Time.deltaTime).setOnComplete(() =>
+        if (canexitorenter == false && stoprotation == false)
         {
-            Pcmanager.Instance.CanClick = true;
-
-        });
-        StartCoroutine(enterthingrotation());
-    }
-
-    // private void letgoofobject()
-    // {
-    //    // temphold.position = translatetocell(temphold.position);
-    //     temphold.localPosition = new Vector3(0, 0, 0);
-    //     tempcollider.enabled = true;
-    //     tempcollider = null;
-    //     temphold = null;
-    // }
-    private IEnumerator enterthingrotation()
-    {
-        int i = 0;
-        while (i < 60)
-        {
-            GetHead.transform.rotation = Quaternion.Lerp(GetHead.transform.rotation, CameraPostion.rotation, 10.0f * Time.deltaTime);
-            i++;
-            yield return new WaitForFixedUpdate();
+            canexitorenter = true;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            Pcmanager.Instance.InteractPc += getmousepos;
+            CharacterMovement.Instance.enabled = false;
+            cam.enabled = false;
+            Debug.Log("E");
+            LeanTween.alphaCanvas(staminaandhealth, ConstValues.Float.zero, 60.0f * Time.deltaTime);
+            LeanTween.move(GetHead, CameraPostion.position, 60.0f * Time.deltaTime).setEaseOutSine().setOnComplete(() =>
+            {
+                Pcmanager.Instance.CanClick = true;
+                stoprotation = true;
+                StartCoroutine(WaitUntllPressExitKey());
+            });
+            StartCoroutine(rotationlerp(CameraPostion.rotation));
         }
 
     }
-
+    private IEnumerator WaitUntllPressExitKey()
+    {
+        yield return new WaitUntil(() => Pcmanager.Instance.CanClick == true && Input.GetKeyDown(KeyCode.T));
+        Pcmanager.Instance.InteractPc -= enterthing;
+        Pcmanager.Instance.InteractPc += ExitThing;
+        Pcmanager.Instance.InvokePc();
+    }
+    private IEnumerator rotationlerp(Quaternion rot)
+    {
+        float timedelta = 0;
+        while (!stoprotation)
+        {
+            timedelta += ConstValues.Float.one * Time.deltaTime;
+            GetHead.transform.rotation = Quaternion.Lerp(GetHead.transform.rotation, rot, timedelta / ConstValues.Float.one);
+            yield return new WaitForFixedUpdate();
+        }
+        GetHead.transform.rotation = rot;
+        stoprotation = false;
+    }
     private void ExitThing()
     {
-        Pcmanager.Instance.InteractPc -= getmousepos;
-        LeanTween.alphaCanvas(staminaandhealth, 1, 60.0f * Time.deltaTime);
-        LeanTween.moveLocal(GetHead, Vector3.zero, 30.0f * Time.deltaTime).setEaseOutSine().setOnComplete(() =>
-         {
-             Cursor.visible = false;
-             Cursor.lockState = CursorLockMode.Locked;
-             Pcmanager.Instance.CanClick = false;
-             CharacterMovement.Instance.enabled = true;
-             cam.enabled = true;
-         }); ;
-        LeanTween.rotateLocal(GetHead, Vector3.zero, 30.0f * Time.deltaTime);
+        if (canexitorenter == true && stoprotation == false)
+        {
+            canexitorenter = false;
+            Pcmanager.Instance.InteractPc -= getmousepos;
+
+            LeanTween.alphaCanvas(staminaandhealth, ConstValues.Float.one, 60.0f * Time.deltaTime);
+            LeanTween.moveLocal(GetHead, Vector3.zero, 60.0f * Time.deltaTime).setEaseOutSine().setOnComplete(() =>
+             {
+                 Cursor.visible = false;
+                 Cursor.lockState = CursorLockMode.Locked;
+                 Pcmanager.Instance.CanClick = false;
+                 Pcmanager.Instance.CanOpenPc = true;
+                 CharacterMovement.Instance.enabled = true;
+                 cam.enabled = true;
+                 
+                 stoprotation = true;
+                 Debug.Log("aaaaaaaa");
+                 Pcmanager.Instance.InteractPc += enterthing;
+                 Pcmanager.Instance.InteractPc -= ExitThing;
+             }); ;
+            StartCoroutine(rotationlerp(GetHead.transform.parent.rotation));
+        }
+
+
     }
     private void getmousepos()
     {
+        
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit raycas, 999f, mask, QueryTriggerInteraction.Collide))
         {
-            temphold = raycas.transform;;
+            
+            Pcmanager.Instance.CanClick = false;
+            temphold = raycas.transform; ;
             mZCoord = Camera.main.WorldToScreenPoint(temphold.position).z;
             mOffset = temphold.position - mouseposinput();
             StartCoroutine(bringapplicationtomousepos());
@@ -150,7 +172,7 @@ public sealed class PcObject : MonoBehaviour
         int xsave = 0, ysave = 0;
         int godowntocheck = 0;
         int xvalue = 0;
-        
+
         while (Input.GetKey(KeyCode.Mouse0))
         {
             temphold.position = mouseposinput() + mOffset;
@@ -186,15 +208,14 @@ public sealed class PcObject : MonoBehaviour
                 xvalue = ysave > height - 2 ? xsave + 1 : xsave + fixgridx;
                 xvalue = xsave + 1 > width - 1 ? 0 : xvalue;
                 godowntocheck += 1;
-                godowntocheck = ysave> height - 2 ? 0 : godowntocheck;
-                
-                getnextrow = gridarray[xvalue, ysave = ysave > height - 2 ? godowntocheck : ysave +godowntocheck];
-                
-                isdonesearching = getnextrow.transform.childCount> 0 ? false : true;
+                godowntocheck = ysave > height - 2 ? 0 : godowntocheck;
+
+                getnextrow = gridarray[xvalue, ysave = ysave > height - 2 ? godowntocheck : ysave + godowntocheck];
+
+                isdonesearching = getnextrow.transform.childCount > 0 ? false : true;
             }
             else
             {
-                // getnextrow = getnextrow != null ? gridarray[xvalue, y + godowntocheck] : savegridobject;
                 isdonesearching = true;
             }
             yield return new WaitForEndOfFrame();
@@ -202,7 +223,7 @@ public sealed class PcObject : MonoBehaviour
         temphold.parent = savegridobject.transform.childCount > 0 ? getnextrow.transform : savegridobject.transform;
         temphold.localPosition = Vector3.zero;
         temphold = null;
-        
+        Pcmanager.Instance.CanClick = true;
     }
     // private IEnumerator checkforotherspot()
     // {
