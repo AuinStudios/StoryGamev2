@@ -35,7 +35,7 @@ public class openapplicationclass : functions
 
 }
 
-public class PcObject : MonoBehaviour
+public class PcObject : MonoBehaviour 
 {
     [Header("Ui")]
     [SerializeField]
@@ -74,6 +74,8 @@ public class PcObject : MonoBehaviour
     [Header("bools")]
     private bool canexitorenter;
     private bool stoprotation;
+    [Header("testing area")]
+    private int i = 0;
     private void Start()
     {
         gridarray = new GameObject[width, height];
@@ -181,12 +183,17 @@ public class PcObject : MonoBehaviour
     {
         int i = 0;
         bool a = false;
+        Transform RAYCASTHIT = null;
+        
         yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
         Ray ray = CamRay.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit raycas, 999f, mask, QueryTriggerInteraction.Collide))
         {
+            RAYCASTHIT = raycas.transform;
             while (!a)
             {
+
+                Debug.Log(i);
                 Debug.Log("A");
                 if (Input.GetMouseButton(0) && Input.GetAxis("Mouse X") < 0.0f || Input.GetAxis("Mouse X") > 0.0f || Input.GetAxis("Mouse Y") < 0.0f || Input.GetAxis("Mouse Y") > 0.0f)
                 {
@@ -196,10 +203,13 @@ public class PcObject : MonoBehaviour
                 }
                 if (Input.GetMouseButtonDown(0))
                 {
-                    i++;
-                    Debug.Log(i);
+                    i += 1;
                 }
-                yield return new WaitForFixedUpdate();
+                if(i > 1)
+                {
+                    break;
+                }
+                yield return null;
             }
 
         }
@@ -209,7 +219,9 @@ public class PcObject : MonoBehaviour
         }
         if (i > 1)
         {
-            // test
+            RAYCASTHIT.GetChild(0).gameObject.SetActive(true);
+            LeanTween.move(RAYCASTHIT.GetChild(0).gameObject, RAYCASTHIT.position + new Vector3(0.1f, 0.1f, 0.0f), 60.0f * Time.deltaTime);
+            LeanTween.scale(RAYCASTHIT.GetChild(0).gameObject, new Vector3(8.0f, 5.0f, 0.0f), 60.0f * Time.deltaTime);
         }
 
     }
@@ -376,6 +388,4 @@ public class PcObject : MonoBehaviour
         mousepos.z = mZCoord;
         return CamRay.ScreenToWorldPoint(mousepos);
     }
-
-
 }
