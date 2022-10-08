@@ -44,7 +44,7 @@ public sealed class WeaponSystem : MonoBehaviour
     [Header("Floats")]
     private float ChargeDamage;
     private float TimeUntllCharge;
-    private float cooldown = 0.0f;
+    private float cooldown = ConstValues.Float.zero;
     // private float SphereRadius = 0.3f;
     [Header("WeaponCollider")]
     [SerializeField]
@@ -56,7 +56,7 @@ public sealed class WeaponSystem : MonoBehaviour
     private void Update()
     {
         // cooldown ---------------------------------------------------------------------------------------
-        cooldown = cooldown > 0 ? cooldown -= Time.deltaTime : cooldown = ConstValues.Float.zero;
+        cooldown = cooldown > ConstValues.Float.zero ? cooldown -= Time.deltaTime : cooldown = ConstValues.Float.zero;
         // recoil ---------------------------------------------------------------------------------------
 
         // weaponsystem ---------------------------------------------------------------------------------------
@@ -88,7 +88,7 @@ public sealed class WeaponSystem : MonoBehaviour
                 cooldown = 4.3f;
                 WeaponAnim.SetBool("chargeing", false);
                 //StartCoroutine(recoil());
-                StartCoroutine(HitObject(0, 45));
+                StartCoroutine(HitObject(ConstValues.Float.zero, 45.0f));
                 TimeUntllCharge = 0;
             }
             else
@@ -98,7 +98,7 @@ public sealed class WeaponSystem : MonoBehaviour
                 WeaponAnim.SetTrigger("Swing");
                 // this is basically a bool for the animator to not be able to weapon swap or open inv
                 WeaponAnim.SetInteger("CanWeaponSwap", 1);
-                StartCoroutine(HitObject(0.8f, 30));
+                StartCoroutine(HitObject(0.8f, 30.0f));
             }
         }
     }
@@ -168,5 +168,3 @@ public sealed class WeaponSystem : MonoBehaviour
        
     }
 }
-
-

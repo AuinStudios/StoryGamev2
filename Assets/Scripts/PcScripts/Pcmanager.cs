@@ -31,6 +31,7 @@ public sealed class Pcmanager : MonoBehaviour
     public event Pcs InteractPc;
     public bool CanClick = false;
     public bool CanOpenPc = false;
+    public bool CanOpenApplication = false;
     public void InvokePc()
     {
         InteractPc.Invoke();
@@ -41,9 +42,9 @@ public sealed class Pcmanager : MonoBehaviour
         {
             InvokePc();
         }
-        else if (CanClick == true && Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            InvokePc();
-        }
+       // else if (CanClick == true && Input.GetKeyDown(KeyCode.Mouse0))
+       // {
+       //     InvokePc();
+       // }
     }
 }

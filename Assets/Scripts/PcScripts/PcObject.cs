@@ -3,15 +3,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 /// <summary>
 ///     What does this PcObject do?
 /// </summary>
-public sealed class PcObject : MonoBehaviour
+/// 
+public abstract class functions : PcObject
+{
+    public Transform applicationopen = null;
+    private void Start()
+    {
+        applicationopen = holdapplication;
+    }
+    public virtual void fireray()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit raycas, 999f, mask, QueryTriggerInteraction.Collide))
+        {
+            applicationopen = raycas.transform;
+        }
+    }
+}
+
+public class openapplicationclass : functions
+{
+    private void openapplication()
+    {
+        LeanTween.move(applicationopen.GetChild(0).gameObject, applicationopen.position + new Vector3(0.1f, 0.1f, 0.0f), 60.0f * Time.deltaTime);
+        LeanTween.scale(applicationopen.GetChild(0).gameObject, new Vector3(8.0f, 5.0f, 0.0f), 60.0f * Time.deltaTime);
+    }
+
+}
+
+public class PcObject : MonoBehaviour
 {
     [Header("Ui")]
     [SerializeField]
     private CanvasGroup staminaandhealth;
+    [SerializeField]
+    private TextMeshProUGUI interactDialog;
+    [SerializeField]
+    private Transform interactHoverTransform;
     [Header("Pc Click And Drag Propertys")]
     // HAVE AN EXTRA ONE IN WIDTH TO FIX GRID IDK WHY BUT IT FIXES IT
     [SerializeField]
@@ -20,11 +52,11 @@ public sealed class PcObject : MonoBehaviour
     private Transform startpos, endpos;
     [SerializeField]
     private GameObject[,] gridarray;
-    private Transform temphold;
-    [SerializeField]
-    private LayerMask mask;
+    [HideInInspector]
+    public Transform holdapplication;
     [SerializeField]
     private Transform getgrid;
+    public LayerMask mask;
     [Header(" placeing the object in the grid")]
     private Vector3 mOffset;
     private float mZCoord;
@@ -35,6 +67,8 @@ public sealed class PcObject : MonoBehaviour
     private GameObject GetHead;
     [SerializeField]
     private CameraController cam;
+    [SerializeField]
+    private Camera CamRay;
     [Header("fix a bug from being in the same xgrid")]
     private int fixgridx = 0;
     [Header("bools")]
@@ -60,6 +94,7 @@ public sealed class PcObject : MonoBehaviour
             Pcmanager.Instance.InteractPc += enterthing;
             Pcmanager.Instance.InteractPc -= ExitThing;
             Pcmanager.Instance.CanOpenPc = true;
+            ShowInteractDialog();
         }
     }
     private void OnTriggerExit(Collider other)
@@ -67,9 +102,9 @@ public sealed class PcObject : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Pcmanager.Instance.InteractPc -= enterthing;
-            
-            Pcmanager.Instance.CanOpenPc = false;
 
+            Pcmanager.Instance.CanOpenPc = false;
+            HideInteractDialog();
         }
     }
 
@@ -77,19 +112,20 @@ public sealed class PcObject : MonoBehaviour
     {
         if (canexitorenter == false && stoprotation == false)
         {
+            HideInteractDialog();
             canexitorenter = true;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
-            Pcmanager.Instance.InteractPc += getmousepos;
             CharacterMovement.Instance.enabled = false;
             cam.enabled = false;
-            Debug.Log("E");
             LeanTween.alphaCanvas(staminaandhealth, ConstValues.Float.zero, 60.0f * Time.deltaTime);
             LeanTween.move(GetHead, CameraPostion.position, 60.0f * Time.deltaTime).setEaseOutSine().setOnComplete(() =>
             {
+
                 Pcmanager.Instance.CanClick = true;
                 stoprotation = true;
                 StartCoroutine(WaitUntllPressExitKey());
+                StartCoroutine(clickfunction());
             });
             StartCoroutine(rotationlerp(CameraPostion.rotation));
         }
@@ -100,6 +136,7 @@ public sealed class PcObject : MonoBehaviour
         yield return new WaitUntil(() => Pcmanager.Instance.CanClick == true && Input.GetKeyDown(KeyCode.T));
         Pcmanager.Instance.InteractPc -= enterthing;
         Pcmanager.Instance.InteractPc += ExitThing;
+
         Pcmanager.Instance.InvokePc();
     }
     private IEnumerator rotationlerp(Quaternion rot)
@@ -130,9 +167,8 @@ public sealed class PcObject : MonoBehaviour
                  Pcmanager.Instance.CanOpenPc = true;
                  CharacterMovement.Instance.enabled = true;
                  cam.enabled = true;
-                 
+                 ShowInteractDialog();
                  stoprotation = true;
-                 Debug.Log("aaaaaaaa");
                  Pcmanager.Instance.InteractPc += enterthing;
                  Pcmanager.Instance.InteractPc -= ExitThing;
              }); ;
@@ -141,25 +177,59 @@ public sealed class PcObject : MonoBehaviour
 
 
     }
-    private void getmousepos()
+    private IEnumerator clickfunction()
     {
-        
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        int i = 0;
+        bool a = false;
+        yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+        Ray ray = CamRay.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit raycas, 999f, mask, QueryTriggerInteraction.Collide))
         {
-            
-            Pcmanager.Instance.CanClick = false;
-            temphold = raycas.transform; ;
-            mZCoord = Camera.main.WorldToScreenPoint(temphold.position).z;
-            mOffset = temphold.position - mouseposinput();
-            StartCoroutine(bringapplicationtomousepos());
+            while (!a)
+            {
+                Debug.Log("A");
+                if (Input.GetMouseButton(0) && Input.GetAxis("Mouse X") < 0.0f || Input.GetAxis("Mouse X") > 0.0f || Input.GetAxis("Mouse Y") < 0.0f || Input.GetAxis("Mouse Y") > 0.0f)
+                {
+                    Pcmanager.Instance.InteractPc += getmousepos;
+                    Pcmanager.Instance.InvokePc();
+                    break;
+                }
+                if (Input.GetMouseButtonDown(0))
+                {
+                    i++;
+                    Debug.Log(i);
+                }
+                yield return new WaitForFixedUpdate();
+            }
+
+        }
+        else
+        {
+            StartCoroutine(clickfunction());
+        }
+        if (i > 1)
+        {
+            // test
         }
 
+    }
+    private void getmousepos()
+    {
+        Ray ray = CamRay.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit raycas, 999f, mask, QueryTriggerInteraction.Collide))
+        {
+            Debug.Log("hmm");
+            Pcmanager.Instance.CanClick = false;
+            holdapplication = raycas.transform; ;
+            mZCoord = CamRay.WorldToScreenPoint(holdapplication.position).z;
+            mOffset = holdapplication.position - mouseposinput();
+            StartCoroutine(bringapplicationtomousepos());
+        }
     }
 
     private IEnumerator bringapplicationtomousepos()
     {
-        temphold.parent = null;
+        holdapplication.parent = null;
         fixgridx = 0;
         GameObject getgridobject = null;
         GameObject savegridobject = null;
@@ -173,10 +243,10 @@ public sealed class PcObject : MonoBehaviour
         int godowntocheck = 0;
         int xvalue = 0;
 
-        while (Input.GetKey(KeyCode.Mouse0))
+        while (Input.GetMouseButton(0))
         {
-            temphold.position = mouseposinput() + mOffset;
-            temphold.position = clamp(temphold.position);
+            holdapplication.position = mouseposinput() + mOffset;
+            holdapplication.position = clamp(holdapplication.position);
             yield return new WaitForFixedUpdate();
         }
 
@@ -186,7 +256,7 @@ public sealed class PcObject : MonoBehaviour
             {
 
                 getgridobject = gridarray[x, y];
-                distance = Vector3.Distance(temphold.position, getgridobject.transform.position);
+                distance = Vector3.Distance(holdapplication.position, getgridobject.transform.position);
                 if (distance < maxdistance)
                 {
                     xsave = x;
@@ -204,15 +274,14 @@ public sealed class PcObject : MonoBehaviour
 
             if (getnextrow.transform.childCount > 0)
             {
-                fixgridx = ysave > height - 2 ? fixgridx += 1 : fixgridx;
-                xvalue = ysave > height - 2 ? xsave + 1 : xsave + fixgridx;
-                xvalue = xsave + 1 > width - 1 ? 0 : xvalue;
-                godowntocheck += 1;
-                godowntocheck = ysave > height - 2 ? 0 : godowntocheck;
-
+                fixgridx = ysave > height - 2 ? fixgridx += ConstValues.Int.one : fixgridx;
+                xvalue = ysave > height - 2 ? xsave + ConstValues.Int.one : xsave + fixgridx;
+                xvalue = xvalue < width - ConstValues.Int.one ? xvalue : ConstValues.Int.zero;
+                godowntocheck = ConstValues.Int.one;
+                godowntocheck = ysave > height - 2 ? ConstValues.Int.zero : godowntocheck;
                 getnextrow = gridarray[xvalue, ysave = ysave > height - 2 ? godowntocheck : ysave + godowntocheck];
 
-                isdonesearching = getnextrow.transform.childCount > 0 ? false : true;
+                isdonesearching = getnextrow.transform.childCount > ConstValues.Int.zero ? false : true;
             }
             else
             {
@@ -220,10 +289,15 @@ public sealed class PcObject : MonoBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
-        temphold.parent = savegridobject.transform.childCount > 0 ? getnextrow.transform : savegridobject.transform;
-        temphold.localPosition = Vector3.zero;
-        temphold = null;
+        if (holdapplication != null)
+        {
+            holdapplication.parent = savegridobject.transform.childCount > ConstValues.Int.zero ? getnextrow.transform : savegridobject.transform;
+            holdapplication.localPosition = Vector3.zero;
+        }
+        holdapplication = null;
         Pcmanager.Instance.CanClick = true;
+        Pcmanager.Instance.InteractPc -= getmousepos;
+        StartCoroutine(clickfunction());
     }
     // private IEnumerator checkforotherspot()
     // {
@@ -270,6 +344,23 @@ public sealed class PcObject : MonoBehaviour
     //  {
     //      return grid.GetCellCenterWorld(grid.WorldToCell(pos));
     //  }
+    private void ShowInteractDialog()
+    {
+        LeanTween.cancel(interactHoverTransform.gameObject);
+        LeanTween.scale(interactHoverTransform.gameObject, Vector3.one, 30.0f * Time.deltaTime).setEaseOutBounce();
+
+        interactDialog.text = "Press 'E'";
+       // LeanTween.alphaText(interactDialog.rectTransform, ConstValues.Float.one, 30.0f * Time.deltaTime);
+    }
+    private void HideInteractDialog()
+    {
+        LeanTween.cancel(interactHoverTransform.gameObject);
+        LeanTween.scale(interactHoverTransform.gameObject, Vector3.zero, 30.0f * Time.deltaTime).setOnComplete(() =>
+        {
+            interactDialog.text = "";
+        });
+        
+    }
     private Vector3 clamp(Vector3 pos)
     {
         //Vector3 clamp = pos;
@@ -283,6 +374,8 @@ public sealed class PcObject : MonoBehaviour
     {
         Vector3 mousepos = Input.mousePosition;
         mousepos.z = mZCoord;
-        return Camera.main.ScreenToWorldPoint(mousepos);
+        return CamRay.ScreenToWorldPoint(mousepos);
     }
+
+
 }

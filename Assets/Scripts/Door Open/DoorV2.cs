@@ -72,6 +72,7 @@ public sealed class DoorV2 : MonoBehaviour
 
     private void ShowInteractDialog()
     {
+        LeanTween.cancel(interactHoverTransform.gameObject);
         LeanTween.scale(interactHoverTransform.gameObject, Vector3.one, 30.0f * Time.deltaTime).setEaseOutBounce();
 
         interactDialog.text = "Press 'E'";
@@ -129,6 +130,7 @@ public sealed class DoorV2 : MonoBehaviour
     
     private void HideInteractDialog()
     {
+        LeanTween.cancel(interactHoverTransform.gameObject);
         LeanTween.scale(interactHoverTransform.gameObject, Vector3.zero, 30.0f * Time.deltaTime).setOnComplete(() => 
         {
             interactDialog.text = "";

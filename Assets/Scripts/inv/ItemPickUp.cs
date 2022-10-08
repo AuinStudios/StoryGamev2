@@ -6,8 +6,6 @@ using TMPro;
 
 public sealed class ItemPickUp : MonoBehaviour
 {
-
-
     [Header("Inv And Scriptableobject")]
     [SerializeField]
     private ItemsScriptableobject Item;
@@ -15,7 +13,7 @@ public sealed class ItemPickUp : MonoBehaviour
     private invmanager inv;
     [Header("Transforms")]
     [SerializeField]
-    private Transform UiPopUpHover;
+    private Transform interactHoverTransform;
     // [SerializeField]
     // private Transform Player;
     [SerializeField]
@@ -23,7 +21,7 @@ public sealed class ItemPickUp : MonoBehaviour
 
     [Header("UiTexts")]
     [SerializeField]
-    private TextMeshProUGUI HoverPickUpText;
+    private TextMeshProUGUI interactDialog;
     [HideInInspector]
     public bool IsDisableOrNot;
 
@@ -50,12 +48,13 @@ public sealed class ItemPickUp : MonoBehaviour
         }
         else if (Vector3.Distance(transform.position, CharacterMovement.Instance.transform.position) <= 5 && IsDisableOrNot == false)
         {
-            HoverPickUpText.text = Item.ItemName;
+            interactDialog.text = Item.ItemName;
             IsDisableOrNot = true;
             OnHover();
         }
         else if (Input.GetKeyDown(KeyCode.E) && Vector3.Distance(transform.position, CharacterMovement.Instance.transform.position) <= 5)
         {
+           
             ItemGet();
         }
     }
@@ -134,7 +133,8 @@ public sealed class ItemPickUp : MonoBehaviour
             // Destroy(boxcollider);
             // Destroy(DisableScript);
 
-            UiPopUpHover.localScale = Vector3.zero;
+            interactHoverTransform.localScale = Vector3.zero;
+            
             for (int i = 0; i < inv.slots.Length; i++)
             {
                 if (inv.slots[i].enabled == false)
@@ -151,8 +151,11 @@ public sealed class ItemPickUp : MonoBehaviour
         }
         else
         {
+            inv.getpickupscriptonce = true;
+            inv.pickup = null;
             CharacterMovement.Instance.LevelClearance = Item.KeycardLevel;
-            UiPopUpHover.localScale = Vector3.zero;
+            interactHoverTransform.localScale = Vector3.zero;
+            LeanTween.cancel(interactHoverTransform.gameObject);
             Destroy(gameObject);
         }
     }
@@ -166,7 +169,8 @@ public sealed class ItemPickUp : MonoBehaviour
 
     private void OffHover()
     {
-        LeanTween.scale(UiPopUpHover.gameObject, Vector3.zero, 60.0f * Time.deltaTime).setEaseOutBounce();
+        LeanTween.cancel(interactHoverTransform.gameObject);
+        LeanTween.scale(interactHoverTransform.gameObject, Vector3.zero, 60.0f * Time.deltaTime).setEaseOutBounce();
         //LerpTime = 0;
         //while (LerpTime < 0.3f)
         //{
@@ -182,7 +186,8 @@ public sealed class ItemPickUp : MonoBehaviour
     }
     private void OnHover()
     {
-        LeanTween.scale(UiPopUpHover.gameObject, Vector3.one, 60.0f * Time.deltaTime).setEaseOutBounce();
+        LeanTween.cancel(interactHoverTransform.gameObject);
+        LeanTween.scale(interactHoverTransform.gameObject, Vector3.one, 60.0f * Time.deltaTime).setEaseOutBounce();
         //LerpTime = 0;
         //while (LerpTime < 0.3f)
         //{
